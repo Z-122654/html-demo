@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="../../../static/miniui/miniui.css">
+    <script src="../../../static/jquery/jquery.min.js"></script>
+    <script src="../../../static/miniui/miniui.js"></script>
+</head>
+<body>
+<h1>LazyTree 懒加载树形</h1>
+
+<input type="button" value="刷新节点" onclick="refreshNode()"/>
+<ul id="tree1" class="mini-tree" url="http://www.miniui.com/demo/data/TreeService.aspx?method=LoadNodes"
+    style="width:300px;height:200px;padding:5px;"
+    showTreeIcon="true" textField="name" onbeforeload="onBeforeTreeLoad"
+    idField="id" parentField="pid" resultAsTree="false"
+>
+</ul>
+
+
+<script type="text/javascript">
+    mini.parse();
+
+    function onBeforeTreeLoad(e) {
+        var tree = e.sender;    //树控件
+        var node = e.node;      //当前节点
+        var params = e.params;  //参数对象
+
+        //可以传递自定义的属性
+        params.myField = "123"; //后台：request对象获取"myField"
+
+    }
+
+    function refreshNode() {
+        var tree = mini.get("tree1");
+        var node = tree.getSelectedNode();
+        if (node) {
+            tree.loadNode(node);
+        }
+    }
+
+</script>
+
+</body>
+</html>

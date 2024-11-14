@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+</body>
+<script>
+    window.name='杰克';
+    let user = {
+        name: '张三',
+        age: 18,
+        say:  ()=> {
+            console.log(this.name);
+        }
+    };
+    //这段代码中,this指向window,因为箭头函数没有自己的this,它会继承外层函数的this
+    //如果不明白可以这么看，如果say的值是一个匿名函数，那，say函数中的this就是user，但现在say是个箭头函数，它会继承外层函数的this，所以this不是user是window
+    user.say();
+
+    let student = {
+        name: '张三',
+        age: 18,
+        say: function () {
+            let hello = ()=> {
+                console.log(this.name);
+            };
+            hello();
+        }
+    };
+    //根据以上自行分析this，（this指向student）
+    student.say();
+</script>
+</html>

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+    function runAsync1() {
+        return new Promise(function (resolve, reject) {
+            setTimeout(function () {
+
+            }, 2000)
+        });
+    }
+
+    function runAsync2() {
+        return new Promise(function (resolve, reject) {
+            setTimeout(function () {
+                alert("runAsync2");
+                resolve("随便什么数据2");
+            }, 2000)
+        });
+    }
+
+    function runAsync3() {
+        return new Promise(function (resolve, reject) {
+            setTimeout(function () {
+                alert("runAsync3");
+                resolve("随便什么数据3");
+            }, 2000)
+        });
+    }
+
+    async function runAsync4() {
+        setTimeout(() => {
+            alert("runAsync4")
+            resolve('随便什么数据4');
+        }, 2000);
+    }
+
+    let sdf = runAsync1().then(function (data) {
+        alert(data);
+        return runAsync2();
+    }).then(function (data) {
+        alert(data)
+        return runAsync3();
+    }).then(function (data) {
+        alert(data)
+        runAsync4().then(function (runAsync4Data) {
+            alert(runAsync4Data);
+        });
+    })
+    debugger
+    let a = 0;
+    /*    let a = runAsync1()
+            .then(function (data) {
+                alert(data);
+                return runAsync2();
+            });
+        let b = a.then(function (data) {
+            alert(data);
+            return '直接返回数据';  //这里直接返回数据
+        });
+        let c = b.then(function (data) {
+            alert(data);
+        });*/
+</script>
+</body>
+</html>

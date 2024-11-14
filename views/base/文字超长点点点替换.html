@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .container {
+            display: flex;
+            border: 1px solid #ccc; /* 可选：添加边框以便于查看效果 */
+            padding: 10px;
+        }
+
+        .left {
+            flex: 4;
+            display: flex; /* 使 .left 成为 flex 容器 */
+            align-items: center; /* 可选：垂直居中内容 */
+            padding-right: 10px; /* 可选：右边距，以防止文本与右边元素重叠 */
+            border-right: 1px solid #ccc; /* 可选：添加边框以便于查看效果 */
+        }
+
+        .left div {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            flex: 1; /* 使嵌套的 div 占满父容器的宽度 */
+        }
+
+        .right {
+            flex: 2;
+            padding-left: 10px; /* 可选：左边距，以防止文本与左边元素重叠 */
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="container">
+        <div class="left">
+            <div>
+                This is a very long text in the left container that should be truncated with an ellipsis if it is too long.This is a very long text in the left container that should be truncated with an ellipsis if it is too long.
+            </div>
+        </div>
+        <div class="right">
+            Right
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

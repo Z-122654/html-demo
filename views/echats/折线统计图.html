@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../../static/echarts/echarts.min.js"></script>
+    <script src="../../static/vue/vue.js"></script>
+</head>
+<body>
+<style>
+    #airTemperature {
+        border: 1px solid deepskyblue;
+    }
+</style>
+<div id="app">
+    <div id="airTemperature" style="width: 600px;height: 300px;"></div>
+</div>
+</body>
+<script>
+    new Vue({
+        el: '#root',
+        data: {
+            airTemperature: {
+                tooltip: {
+                    trigger: 'axis'
+                },
+                legend: {
+                    data: ['每批次平均登记', '每批次平均投入品'],
+                    bottom:7
+                },
+                grid: {
+                    left: '3%',
+                    right: '4%',
+                    bottom: '40',
+                    containLabel: true
+                },
+                toolbox: {
+                    feature: {
+                        saveAsImage: {}
+                    }
+                },
+                xAxis: {
+                    type: 'category',
+                    boundaryGap: false,
+                    data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月'],
+                    axisLine: {
+                        lineStyle: {
+                            color:'#e10505'
+                        }
+                    }
+                },
+                yAxis: {
+                    type: 'value',
+                    axisLine:{
+                        show:false
+                    },
+                    splitLine:{
+                        lineStyle: {
+                            type:'dashed',
+                            color:"rgb(53,53,53)"
+                        }
+                    },
+                    axisLabel:{
+                        color:'#e10505'
+                    }
+                },
+                series: [
+                    {
+                        name: '每批次平均登记',
+                        type: 'line',
+                        stack: 'Total',
+                        data: [120, 132, 101, 134, 90, 230, 210],
+                    },
+                    {
+                        name: '每批次平均投入品',
+                        type: 'line',
+                        stack: 'Total',
+                        data: [220, 182, 191, 234, 290, 330, 310],
+                    }
+                ]
+            }
+        },
+        methods: {
+            //空气温度
+            bindAirTemperature() {
+                var chartDom = document.getElementById('airTemperature');
+                var myChart = echarts.init(chartDom);
+                let sdf = this.airTemperature;
+                myChart.setOption(sdf);
+                // this.setReportSize();
+            },
+            add() {
+                console.log('add')
+                this.n++
+            },
+            bye() {
+                console.log('bye')
+                this.$destroy()
+            }
+        },
+        watch: {
+            n() {
+                console.log('n变了')
+            }
+        },
+        beforeCreate() {
+            console.log('beforeCreate')
+        },
+        created() {
+            console.log('created')
+        },
+        beforeMount() {
+            console.log('beforeMount')
+        },
+        mounted() {
+            console.log('mounted')
+            this.bindAirTemperature();
+        },
+        beforeUpdate() {
+            console.log('beforeUpdate')
+        },
+        updated() {
+            console.log('updated')
+        },
+        beforeDestroy() {
+            console.log('beforeDestroy')
+        },
+        destroyed() {
+            console.log('destroyed')
+        },
+    });
+</script>
+</html>

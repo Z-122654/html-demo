@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="../../static/element/element.css">
+    <script src="../../static/element/vue.js"></script>
+    <script src="../../static/element/index.js"></script>
+</head>
+<script>
+
+</script>
+<body>
+<div id="root">
+    <el-date-picker
+            type="daterange"
+            value-format="yyyy"
+            range-separator="至"
+            start-placeholder="开始年份"
+            end-placeholder="结束年份"
+            :default-time="['00:00:00', '23:59:59']"
+            v-model="yearRange"
+            @change="dateChange"
+    ></el-date-picker>
+</div>
+</body>
+<script>
+    new Vue({
+        el: '#root',
+        data: {
+            yearRange:"",
+        },
+        methods: {
+            dateChange:function (val) {
+                console.log(val)
+            }
+        },
+        watch: {
+
+        },
+        beforeCreate() {
+            console.log('beforeCreate')
+        },
+        created() {
+            console.log('created')
+        },
+        beforeMount() {
+            console.log('beforeMount')
+        },
+        mounted() {
+            console.log('mounted')
+            this.bindAirTemperature();
+        },
+        beforeUpdate() {
+            console.log('beforeUpdate')
+        },
+        updated() {
+            console.log('updated')
+        },
+        beforeDestroy() {
+            console.log('beforeDestroy')
+        },
+        destroyed() {
+            console.log('destroyed')
+        },
+    });
+</script>
+</html>

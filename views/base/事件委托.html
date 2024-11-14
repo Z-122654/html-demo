@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        table  {
+            border-collapse: collapse;
+            margin: 0 auto;
+        }
+        th,td{
+            border: 1px solid deepskyblue;
+            padding: 10px 20px;
+        }
+        .color-box{
+            position: fixed;
+            left: 0;
+            top: 50%;
+            transform: translate(0,-50%);
+            padding: 10px;
+            border: rebeccapurple 1px solid;
+        }
+        .color-box>div{
+            width: 90px;
+            height: 50px;
+            margin: 10px 0;
+        }
+        .color-box>div:nth-child(1){
+            background-color: deepskyblue;
+        }
+        .color-box>div:nth-child(2){
+            background-color: deeppink;
+        }
+        .color-box>div:nth-child(3){
+            background-color: darkblue;
+        }
+    </style>
+</head>
+<body>
+<div class="color-box">
+    <div draggable="true"></div>
+    <div draggable="true"></div>
+    <div draggable="true"></div>
+</div>
+<table>
+    <tr>
+        <th>名称</th>
+        <th>性别</th>
+        <th>年龄</th>
+    </tr>
+    <tr>
+        <td>虎哥</td>
+        <td>男</td>
+        <td>19</td>
+    </tr>
+    <tr>
+        <td>刀哥</td>
+        <td>男</td>
+        <td>21</td>
+    </tr>
+    <tr>
+        <td>小亮</td>
+        <td>男</td>
+        <td>18</td>
+    </tr>
+</table>
+<script>
+    let tableNode = document.querySelector("table");
+    tableNode.addEventListener('')
+</script>
+</body>
+</html>

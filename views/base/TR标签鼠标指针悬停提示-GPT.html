@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>自定义工具提示</title>
+    <style>
+        /* 工具提示的基本样式 */
+        .tooltip {
+            position: relative;
+            cursor: pointer;
+        }
+
+        .tooltip .tooltiptext {
+            /*visibility: hidden;*/
+            display: none;
+            width: 120px;
+            background-color: black;
+            color: #fff;
+            text-align: center;
+            border-radius: 5px;
+            padding: 5px 0;
+            position: absolute;
+            z-index: 1;
+            bottom: 100%;
+            left: 50%;
+            margin-left: -60px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .tooltip:hover .tooltiptext {
+            display: inline-block !important;
+            opacity: 1 !important;
+        }
+    </style>
+</head>
+<body>
+<table border="1">
+    <tr class="tooltip">
+        <td>行1，列1
+            <span class="tooltiptext">这是第一行</span>
+        </td>
+        <td>行1，列2</td>
+    </tr>
+    <tr class="tooltip">
+        <td>行2，列1
+            <span class="tooltiptext">这是第二行</span>
+        </td>
+        <td>行2，列2</td>
+    </tr>
+    <tr class="tooltip">
+        <td>行3，列1
+            <span class="tooltiptext">这是第三行</span>
+        </td>
+        <td>行3，列2</td>
+    </tr>
+</table>
+</body>
+</html>

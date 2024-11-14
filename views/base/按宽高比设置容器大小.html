@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>盒子高度是宽度的1/3</title>
+<style>
+    .box-container {
+        width: 60%; /* 根据需要调整盒子的宽度 */
+        margin: 0 auto; /* 让盒子居中 */
+        background-color: lightgrey; /* 方便观察的背景色 */
+        position: relative; /* 必须设置为relative以便子元素绝对定位 */
+    }
+
+    .box-content {
+        position: absolute; /* 绝对定位以覆盖整个父盒子 */
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #3498db; /* 盒子的背景色 */
+        text-align: center; /* 文字居中 */
+        display: flex; /* 使用flex布局 */
+        align-items: center; /* 垂直居中 */
+        justify-content: center; /* 水平居中 */
+        color: white; /* 文字颜色 */
+        font-size: 20px; /* 文字大小 */
+    }
+
+    .box-container::before {
+        content: '';
+        display: block;
+        padding-top: 33.33%; /* 高度是宽度的1/3 */
+    }
+</style>
+</head>
+<body>
+<div class="box-container">
+    <div class="box-content">高度是宽度的1/3</div>
+    <span style="color: red;">123</span>
+</div>
+
+</body>
+</html>

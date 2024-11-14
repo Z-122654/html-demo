@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="../../static/element/element.css">
+    <script src="../../static/element/vue.js"></script>
+    <script src="../../static/element/index.js"></script>
+</head>
+<body>
+<div id="root">
+    <div class="block">
+        <div class="radio">
+            排序：
+            <el-radio-group v-model="reverse">
+                <el-radio :label="true">倒序</el-radio>
+                <el-radio :label="false">正序</el-radio>
+            </el-radio-group>
+        </div>
+
+        <el-timeline :reverse="reverse">
+            <el-timeline-item size="large"
+                    v-for="(activity, index) in activities"
+                    :key="index" placement="top"
+                    :timestamp="activity.timestamp">
+<!--                {{activity.content}}-->
+                <img src="../../img/touxiang.jpg" width="200" height="200" alt="">
+            </el-timeline-item>
+        </el-timeline>
+    </div>
+</div>
+<script>
+
+    new Vue({
+        el: '#root',
+        data: {
+            reverse: true,
+            activities: [{
+                content: '活动按期开始',
+                timestamp: '2018-04-15'
+            }, {
+                content: '通过审核',
+                timestamp: '2018-04-13'
+            }, {
+                content: '创建成功',
+                timestamp: '2018-04-11'
+            }]
+        },
+        methods: {},
+        watch: {},
+        beforeCreate() {
+            console.log('beforeCreate')
+        },
+        created() {
+            console.log('created')
+        },
+        beforeMount() {
+            console.log('beforeMount')
+        },
+        mounted() {
+            console.log('mounted')
+        },
+        beforeUpdate() {
+            console.log('beforeUpdate')
+        },
+        updated() {
+            console.log('updated')
+        },
+        beforeDestroy() {
+            console.log('beforeDestroy')
+        },
+        destroyed() {
+            console.log('destroyed')
+        },
+    });
+</script>
+</body>
+</html>

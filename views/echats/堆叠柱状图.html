@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../../static/echarts/echarts.min.js"></script>
+    <script src="../../static/vue/vue.js"></script>
+</head>
+<body>
+<div id="app">
+    <div id="airTemperature" style="width: 300px;height: 300px;"></div>
+</div>
+</body>
+<script>
+    new Vue({
+        el: '#root',
+        data: {
+            airTemperature: {
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'shadow'
+                    },
+                },
+                legend: {
+                    bottom:'50%',
+                    right:'0',
+                    orient:'vertical',
+                    padding:0,
+                    itemWidth:7,
+                    itemHeight:7,
+                    textStyle:{
+                        fontSize:10
+                    }
+                },
+                grid: {
+                    left: '0',
+                    right: '23%',
+                    bottom: '25',
+                    containLabel: true
+                },
+                xAxis: [
+                    {
+                        type: 'category',
+                        data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月']
+                    }
+                ],
+                yAxis: [
+                    {
+                        type: 'value'
+                    }
+                ],
+                series: [
+                    {
+                        name: 'Email',
+                        type: 'bar',
+                        stack: 'Ad',
+                        barWidth: '5',
+                        emphasis: {
+                            focus: 'series'
+                        },
+                        data: [120, 132, 101, 134, 90, 230, 210]
+                    },
+                    {
+                        name: 'Union Ads',
+                        type: 'bar',
+                        stack: 'Ad',
+                        barWidth: '10%',
+                        emphasis: {
+                            focus: 'series'
+                        },
+                        data: [220, 182, 191, 234, 290, 330, 310]
+                    },
+                    {
+                        name: 'Video Ads',
+                        type: 'bar',
+                        stack: 'Ad',
+                        barWidth: '10%',
+                        emphasis: {
+                            focus: 'series'
+                        },
+                        data: [150, 232, 201, 154, 190, 330, 410]
+                    }
+                ]
+            }
+        },
+        methods: {
+            //空气温度
+            bindAirTemperature() {
+                debugger
+                var chartDom = document.getElementById('airTemperature');
+                var myChart = echarts.init(chartDom);
+                let sdf = this.airTemperature;
+                myChart.setOption(sdf);
+                // this.setReportSize();
+            },
+            add() {
+                console.log('add')``
+                this.n++
+            },
+            bye() {
+                console.log('bye')
+                this.$destroy()
+            }
+        },
+        watch: {
+            n() {
+                console.log('n变了')
+            }
+        },
+        beforeCreate() {
+            console.log('beforeCreate')
+        },
+        created() {
+            console.log('created')
+        },
+        beforeMount() {
+            console.log('beforeMount')
+        },
+        mounted() {
+            console.log('mounted')
+            this.bindAirTemperature();
+        },
+        beforeUpdate() {
+            console.log('beforeUpdate')
+        },
+        updated() {
+            console.log('updated')
+        },
+        beforeDestroy() {
+            console.log('beforeDestroy')
+        },
+        destroyed() {
+            console.log('destroyed')
+        },
+    });
+</script>
+</html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tooltip Demo with Popper.js</title>
+    <style>
+        /* Tooltip 样式 */
+        .tooltip {
+            background-color: #fff;
+            color: #646464;
+            padding: 8px;
+            border-radius: 4px;
+            font-size: 14px;
+            display: none;
+            border: 1px solid #969696;
+        }
+
+        .tooltip[data-show] {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+
+<button id="tooltipButton">Hover over me</button>
+<div id="tooltip" role="tooltip" class="tooltip">
+    This is a tooltip!This is a tooltip!This is a tooltip!This is a tooltip!This is a tooltip!This is a tooltip!
+</div>
+
+<!-- 引入 Popper.js -->
+<!--<script src="https://unpkg.com/@popperjs/core@2"></script>-->
+<script src="../static/popper/popper.min.js"></script>
+<script>
+    // 获取按钮和 Tooltip 元素
+    const button = document.querySelector('#tooltipButton');
+    const tooltip = document.querySelector('#tooltip');
+
+    // 创建 Popper 实例
+    const popperInstance = Popper.createPopper(button, tooltip, {
+        placement: 'top', // Tooltip 显示在按钮上方
+        modifiers: [
+            {
+                name: 'offset',
+                options: {
+                    offset: [0, 8], // Tooltip 与按钮的距离
+                },
+            },
+        ],
+    });
+
+    // 显示 Tooltip
+    function show() {
+        tooltip.setAttribute('data-show', '');
+        popperInstance.update();
+    }
+
+    // 隐藏 Tooltip
+    function hide() {
+        tooltip.removeAttribute('data-show');
+    }
+
+    // 绑定鼠标事件
+    button.addEventListener('mouseenter', show);
+    button.addEventListener('mouseleave', hide);
+</script>
+</body>
+</html>

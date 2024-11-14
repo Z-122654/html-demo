@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<script>
+
+</script>
+<body>
+<div>
+    <el-row :gutter="20" style="margin-bottom:0;">
+        <el-col
+                :span="2"
+                :style="'border-radius: 4px;height: 100px;width: auto !important;margin:0 10px 16px 10px;padding:0;display: flex;background-color:'+roomRentStatusColorList[roomInfo.roomRentStatusCode]+';'"
+                v-for="(roomInfo,roomIndex) of viewBlockInfo.roomInfoList">
+            <div class="grid-content bg-purple"
+                 @click="openRoomDetail(roomInfo.id,roomInfo.contractId,parkIndex,blockIndex,roomIndex)"
+                 :style="'flex-shrink: 0;flex-grow: 0;width:100px;clear: both;background-color:'+roomRentStatusColorList[roomInfo.contractRoomRentStatusCode?(roomInfo.contractRoomRentStatusCode=='Vacant'?'Vacant':'Leased'):(roomInfo.roomRentStatusCode=='Vacant'?'Vacant':'Leased')]+';'">
+                <span>{{roomInfo.name}}</span> <span>{{roomInfo.rentPrice}}元/{{roomInfo.rentUnit}}</span>
+                <span>{{roomInfo.childRoomList.length>0?'空置面积':'面积'}}：{{roomInfo.acreage}}平米</span>
+            </div>
+            <div class="grid-content bg-purple"
+                 @click="openRoomDetail(childRoom.id,childRoom.contractId,parkIndex,blockIndex,roomIndex)"
+                 :style="'border-left: 1px solid #ffffff;border-radius: 0;flex-shrink: 0;flex-grow: 0;width:100px;clear: both;background-color: rgba(255,255,255,0.4);'"
+                 v-for="(childRoom,index) of roomInfo.childRoomList">
+                <span>{{childRoom.name}} - {{wordArr[index]}}</span> <span>{{childRoom.rentPrice}}元/{{childRoom.rentUnit}}</span>
+                <span>出租面积：{{childRoom.acreage}}平米</span>
+            </div>
+        </el-col>
+    </el-row>
+</div>
+</body>
+<style>
+    .img-box {
+        width: 100px;
+        height: 100px;
+        background-size: 100% 100%;
+        background-repeat: no-repeat;
+        margin-right: 10px;
+    }
+
+    .img-box:hover > .img-btn-box {
+        display: flex !important;
+    }
+
+    .img-btn-box {
+        width: 100px;
+        height: 100px;
+        align-items: center;
+        justify-content: space-evenly;
+        box-sizing: border-box;
+        padding: 0 10px;
+        display: none;
+        background-color: rgba(0, 0, 0, 0.6);
+    }
+
+    .img-btn {
+        width: 20px;
+        height: 20px;
+    }
+</style>
+</html>

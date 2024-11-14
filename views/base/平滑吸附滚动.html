@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+    .box {
+        width: 200px;
+        height: 200px;
+        border: 1px solid #0c0c0c;
+        display: flex;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        margin: 300px auto;
+    }
+
+    .box > div {
+        width: 200px;
+        height: 200px;
+        box-sizing: border-box;
+        display: inline-block;
+        flex-shrink: 0;
+    }
+    .box > div:nth-child(1) {
+        background-color: #1e9fff;
+    }
+    .box > div:nth-child(2) {
+        background-color: #34b11d;
+    }
+    .box > div:nth-child(3) {
+        background-color: #c83528;
+    }
+    .box > div:nth-child(4) {
+        background-color: #6810c7;
+    }
+</style>
+<body>
+<div class="box">
+    <div>A</div>
+    <div>B</div>
+    <div>C</div>
+    <div>D</div>
+</div>
+</body>
+</html>

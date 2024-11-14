@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../../static/echarts/echarts.min.js"></script>
+    <script src="../../static/vue/vue.js"></script>
+</head>
+<body>
+<style>
+    #airTemperature {
+        border: 1px solid deepskyblue;
+        width: 300px;
+        height: 300px;
+
+    }
+</style>
+<div id="app">
+    <div id="airTemperature"></div>
+</div>
+</body>
+<script>
+    new Vue({
+        el: '#root',
+        data: {
+            airTemperature: {
+                tooltip: {
+                    trigger: 'item',
+                    confine: true ,
+                },
+                legend: {
+                    show:false
+                },
+                series: [
+                    {
+                        name: 'Access From',
+                        type: 'pie',
+                        radius: ['50%', '58%'],
+                        avoidLabelOverlap: false,
+                        label: {
+                            show: true,
+                            position: 'center',
+                            fontSize: 12,
+                            overflow:'truncate',
+                            ellipsis: '...' ,
+                            bleedMargin:0,
+                            distanceToLabelLine:0
+                        },
+                        emphasis: {
+                            label: {
+                                show: true,
+                                fontSize: 40,
+                                fontWeight: 'bold'
+                            }
+                        },
+                        labelLine: {
+                            show: true,
+                            length: 0,
+                            smooth:1
+                        },
+                        labelLayout: {
+                            draggable: true
+                        },
+                        data: [
+                            {value: 1048, name: '视频监控'},
+                            {value: 735, name: '风速仪'},
+                            {value: 580, name: '风向仪'},
+                            {value: 484, name: '温度传感器'}
+                        ]
+                    }
+                ]
+            }
+        },
+        methods: {
+            //空气温度
+            bindAirTemperature() {
+                debugger
+                var chartDom = document.getElementById('airTemperature');
+                var myChart = echarts.init(chartDom);
+                let sdf = this.airTemperature;
+                myChart.setOption(sdf);
+                // this.setReportSize();
+            },
+            add() {
+                console.log('add')
+                this.n++
+            },
+            bye() {
+                console.log('bye')
+                this.$destroy()
+            }
+        },
+        watch: {
+            n() {
+                console.log('n变了')
+            }
+        },
+        beforeCreate() {
+            console.log('beforeCreate')
+        },
+        created() {
+            console.log('created')
+        },
+        beforeMount() {
+            console.log('beforeMount')
+        },
+        mounted() {
+            console.log('mounted')
+            this.bindAirTemperature();
+        },
+        beforeUpdate() {
+            console.log('beforeUpdate')
+        },
+        updated() {
+            console.log('updated')
+        },
+        beforeDestroy() {
+            console.log('beforeDestroy')
+        },
+        destroyed() {
+            console.log('destroyed')
+        },
+    });
+</script>
+</html>

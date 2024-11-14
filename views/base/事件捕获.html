@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+    .box {
+        width: 200px;
+        height: 200px;
+        background-color: #1e9fff;
+    }
+
+    .item {
+        width: 100px;
+        height: 100px;
+        background-color: deeppink;
+    }
+</style>
+<body>
+<div class="box">
+    <div class="item"></div>
+</div>
+<script>
+    document.addEventListener("click", function () {
+        alert("document")
+    }, false)
+    document.querySelector("body").addEventListener("click", function () {
+        alert("body")
+    }, false)
+    let num = 1;
+    document.querySelector(".box").addEventListener("click", function (e) {
+        alert("box")
+        e.stopPropagation();
+    }, false)
+    document.querySelector(".item").addEventListener("click", function () {
+        alert("item")
+    }, false)
+
+</script>
+</body>
+</html>

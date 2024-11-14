@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grid Layout Example</title>
+    <style>
+        .container {
+            display: grid;
+            grid-template-columns: 1fr 2fr; /* 左列1份宽度，右列2份宽度 */
+            grid-template-rows: auto auto; /* 两行自动高度 */
+            grid-gap: 10px; /* 设置网格间距 */
+            height: 300px; /* 设置容器高度以便观察效果 */
+        }
+
+        .editFromGrid {
+            grid-column: 1; /* 处在第1列 */
+            grid-row: 1; /* 处在第1行 */
+            background-color: lightblue;
+        }
+
+        .childListGrid {
+            grid-column: 1; /* 处在第1列 */
+            grid-row: 2; /* 处在第2行 */
+            background-color: lightgreen;
+        }
+
+        .childMenuGrid {
+            grid-column: 2; /* 处在第2列 */
+            grid-row: 1 / span 2; /* 从第1行开始，跨越2行 */
+            background-color: lightcoral;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="editFromGrid">A</div>
+    <div class="childListGrid">B</div>
+    <div class="childMenuGrid">C</div>
+</div>
+</body>
+</html>

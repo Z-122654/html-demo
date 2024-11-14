@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="../../static/element/element.css">
+    <script src="../../static/element/vue.js"></script>
+    <script src="../../static/element/index.js"></script>
+    <style>
+        .block{
+            width: 300px;
+            height: 35px;
+            border-top:1px solid #eeeeee ;
+            border-bottom:1px solid #eeeeee ;
+            padding: 0 20px;
+        }
+        .message{
+            border: 1px solid red;
+            line-height: 35px;
+        }
+
+    </style>
+</head>
+<body>
+<div id="root" class="block">
+    <el-carousel trigger="click" direction="vertical" width="300px" height="35px">
+        <el-carousel-item v-for="item in 4" :key="item">
+            <span class="message">{{ item }}</span>
+        </el-carousel-item>
+    </el-carousel>
+</div>
+<script>
+    new Vue({
+        el: '#root',
+        data: {
+            itemArr: ['A', 'B', 'C']
+        },
+        methods: {
+            add() {
+                console.log('add')
+                this.n++
+            },
+            bye() {
+                console.log('bye')
+                this.$destroy();
+            }
+        },
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <div id="message-box">
+
+    </div>
+    <input type="text" id="msgInput"/>
+    <script>
+        let msgInput = document.querySelector("#msgInput");
+        msgInput.addEventListener("keyup",function (e){
+            debugger
+            if(e.key=='Enter'){
+                document.querySelector('#message-box').innerText=msgInput.value;
+            }
+        });
+    </script>
+</body>
+</html>

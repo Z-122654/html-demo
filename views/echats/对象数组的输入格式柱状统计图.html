@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../../static/echarts/echarts.min.js"></script>
+    <script src="../../static/vue/vue.js"></script>
+</head>
+<body>
+<style>
+    #airTemperature {
+        border: 1px solid deepskyblue;
+    }
+</style>
+<div id="app">
+    <div id="airTemperature" style="width: 600px;height: 300px;"></div>
+</div>
+</body>
+<script>
+    new Vue({
+        el: '#root',
+        data: {
+            airTemperature: {
+                legend: {
+                    bottom: '3',
+                    right: '37%',
+                    padding: 0,
+                    itemWidth: 12,
+                    itemHeight: 12,
+                    textStyle: {
+                        fontSize: 12
+                    }
+                },
+                grid: {
+                    left: '0',
+                    right: '0',
+                    bottom: '25',
+                    containLabel: true
+                },
+                tooltip: {},
+                dataset: {
+                    dimensions: ['product', '处理批次', '新增批次'],
+                    source: [
+                        {product: '1月', '处理批次': 43.3, '新增批次': 85.8},
+                        {product: '2月', '处理批次': 83.1, '新增批次': 73.4},
+                        {product: '3月', '处理批次': 86.4, '新增批次': 65.2},
+                        {product: '4月', '处理批次': 72.4, '新增批次': 53.9},
+                        {product: '5月', '处理批次': 43.3, '新增批次': 85.8},
+                        {product: '6月', '处理批次': 83.1, '新增批次': 73.4},
+                        {product: '7月', '处理批次': 86.4, '新增批次': 65.2},
+                        {product: '8月', '处理批次': 72.4, '新增批次': 53.9},
+                        {product: '9月', '处理批次': 43.3, '新增批次': 85.8},
+                        {product: '10月', '处理批次': 83.1, '新增批次': 73.4},
+                        {product: '11月', '处理批次': 86.4, '新增批次': 65.2},
+                        {product: '12月', '处理批次': 72.4, '新增批次': 53.9},
+                    ]
+                },
+                xAxis: {type: 'category'},
+                yAxis: {},
+                // Declare several bar series, each will be mapped
+                // to a column of dataset.source by default.
+                series: [
+                    {type: 'bar', barGap: 0, barWidth: 7},
+                    {type: 'bar', barGap: 0, barWidth: 7}
+                ]
+            }
+        },
+        methods: {
+            //空气温度
+            bindAirTemperature() {
+                debugger
+                var chartDom = document.getElementById('airTemperature');
+                var myChart = echarts.init(chartDom);
+                let sdf = this.airTemperature;
+                myChart.setOption(sdf);
+                // this.setReportSize();
+            },
+            add() {
+                console.log('add')
+                this.n++
+            },
+            bye() {
+                console.log('bye')
+                this.$destroy()
+            }
+        },
+        watch: {
+            n() {
+                console.log('n变了')
+            }
+        },
+        beforeCreate() {
+            console.log('beforeCreate')
+        },
+        created() {
+            console.log('created')
+        },
+        beforeMount() {
+            console.log('beforeMount')
+        },
+        mounted() {
+            console.log('mounted')
+            this.bindAirTemperature();
+        },
+        beforeUpdate() {
+            console.log('beforeUpdate')
+        },
+        updated() {
+            console.log('updated')
+        },
+        beforeDestroy() {
+            console.log('beforeDestroy')
+        },
+        destroyed() {
+            console.log('destroyed')
+        },
+    });
+</script>
+</html>

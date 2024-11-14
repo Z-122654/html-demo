@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+    .box {
+        background-color: deeppink;
+        width: 200px;
+        height: 200px;
+    }
+
+    .blue-box {
+        height: 600px;
+    }
+
+    .width-box {
+        width: 600px;
+    }
+</style>
+<body>
+<div>
+    <div class="box">
+        30
+    </div>
+    <input type="text">
+    <input type="button" value="123">
+</div>
+<script>
+
+    let box = document.querySelectorAll(".box");
+    let num = parseInt(box[0].innerText);
+    setInterval(function () {
+        if (num > 0) {
+            num--;
+            box[0].innerText = num;
+        }
+    }, 300)
+
+    setTimeout(function () {
+        let input = document.querySelector(`input`);
+        input.readOnly = true;
+    }, 2000)
+    box = document.querySelector(".box");
+    setTimeout(function () {
+
+        let boxClassName = box.className;
+        box.className = boxClassName + " blue-box";
+    }, 1000)
+
+    setTimeout(function () {
+        box.classList.add("width-box");
+    }, 2000)
+    box.setAttribute("abc","123");
+    let boxClass = box.getAttribute(`class`);
+    let btn = document.querySelector("[type=button]");
+    debugger
+    btn.value='abc';
+</script>
+</body>
+</html>

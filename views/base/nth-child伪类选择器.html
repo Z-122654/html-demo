@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+    .box1 {
+        width: 600px;
+        height: 600px;
+        border:1px solid lawngreen;
+    }
+
+    .c1, .c2 {
+        width: 300px;
+        height: 300px;
+    }
+    .c1{
+        border:1px solid #00f7de;
+    }
+    .c2{
+        border:1px solid #660a62;
+    }
+
+    .b1, .b2 {
+        display: inline-block;
+        width: 50%;
+        height: 50%;
+        border:1px solid #ffafaf;
+    }
+
+    .b1, .b2 {
+        display: inline-block;
+        width: 50%;
+        height: 50%;
+        border:1px solid #c0a1ff;
+    }
+    .d1, .d2 {
+        display: inline-block;
+        width: 50%;
+        height: 50%;
+        border:1px solid #ffec9e;
+    }
+
+    .box1 .b1:nth-of-type(1){
+        background-color: red;
+    }
+</style>
+<body>
+<div class="box1">
+    <div class="c1">
+        <div class="b1"></div>
+        <div class="b1"></div>
+    </div>
+    <div class="c2">
+        <div class="b1"></div>
+        <div class="b1"></div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="../../../static/miniui/miniui.css">
+    <script src="../../../static/jquery/jquery.min.js"></script>
+    <script src="../../../static/miniui/miniui.js"></script>
+</head>
+<body>
+<div id="datagrid1" class="mini-datagrid" style="width:700px;height:250px;">
+    <div property="columns">
+        <div type="indexcolumn"></div>
+        <div field="loginname" width="120" headerAlign="center" allowSort="true">员工帐号</div>
+        <div field="name" width="120" headerAlign="center" allowSort="true">姓名</div>
+        <div header="工作信息">
+            <div property="columns">
+                <div field="dept_name" width="120">所属部门</div>
+                <div field="position_name" width="100">职位</div>
+                <div field="salary" width="100" allowSort="true">薪资</div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

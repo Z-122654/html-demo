@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+    const getUserData = () => {
+        return new Promise((resolve, reject) => {
+            // 模拟异步操作
+            setTimeout(() => {
+                const user = { name: "John", age: 25 };
+                // 操作完成，传递结果
+                resolve(user);
+            }, 2000);
+        });
+    };
+
+    getUserData()
+        .then((user) => {
+            // 第一个then回调
+            console.log(user);
+            return user.age;
+        })
+        .then((age) => {
+            // 第二个then回调
+            console.log(age);
+        })
+        .catch((error) => {
+            // 错误处理
+            console.log(error);
+        });
+</script>
+</body>
+</html>

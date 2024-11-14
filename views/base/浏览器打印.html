@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <style>
+        body {
+            margin: 0;
+        }
+
+        div {
+            width: 210mm;
+            height: 297mm;
+            box-sizing: border-box;
+            white-space: normal;
+        }
+
+        div:nth-of-type(1) {
+            background-color: cadetblue;
+        }
+
+        div:nth-of-type(2) {
+            background-color: blueviolet;
+        }
+
+        .printBtn {
+            position: fixed;
+            top: 50px;
+            right: 50px;
+        }
+
+        @media print {
+            @page {
+                margin: 0;
+            }
+
+            div:nth-of-type(1) {
+                background-color: cadetblue;
+            }
+
+            div:nth-of-type(2) {
+                background-color: blueviolet;
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+<button onclick="window.print()" class="printBtn">打印</button>
+<div>
+    asdfasddddddddddddddddddddasdfasddddddddddddddddddddasdfasddddddddddddddddddddasdfasddddddddddddddddddddasdfasddddddddddddddddddddasdfasddddddddddddddddddddasdfasddddddddddddddddddddasdfasddddddddddddddddddddasdfasddddddddddddddddddddasdfasddddddddddddddddddddasdfasddddddddddddddddddddasdfasddddddddddddddddddddasdfasddddddddddddddddddddasdfasddddddddddddddddddddasdfasddddddddddddddddddddasdfasddddddddddddddddddddasdfasddddddddddddddddddddasdfasddddddddddddddddddddasdfasddddddddddddddddddddasdfasddddddddddddddddddddasdfasddddddddddddddddddddasdfasddddddddddddddddddddasdfasddddddddddddddddddddasdfasdddddddddddddddddddd
+</div>
+<div>
+    123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123
+</div>
+</body>
+
+
+
+</html>

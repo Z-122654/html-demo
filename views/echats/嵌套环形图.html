@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../../static/echarts/echarts.min.js"></script>
+    <script src="../../static/vue/vue.js"></script>
+</head>
+<style>
+    #airTemperature{
+        border: 1px solid deepskyblue;
+    }
+</style>
+<body>
+<div id="app">
+    <div id="airTemperature" style="width: 300px;height: 300px;"></div>
+</div>
+</body>
+<script>
+    new Vue({
+        el: '#app',
+        data: {
+            airTemperature: {
+                right:"30%",
+                bottom: "50%",
+                tooltip: {
+                    trigger: 'item',
+                    formatter: '{a} <br/>{b}: {c} ({d}%)'
+                },
+                grid:{
+                    left:0,
+                    right:"50%",
+                    width:"20%"
+                },
+                legend: {
+                    bottom:'30%',
+                    right:'0',
+                    orient:'vertical',
+                    padding:0,
+                    itemWidth:7,
+                    itemHeight:7,
+                    borderRadius:'50%',
+                    textStyle:{
+                        fontSize:12
+                    },
+                    data: [
+                        '农资',
+                        '农具',
+                        '种子',
+                        '种苗',
+                        '肥料',
+                        '农药',
+                        '饲料'
+                    ]
+                },
+                series: [
+                    {
+                        name: 'Access From',
+                        type: 'pie',
+                        selectedMode: 'false',
+                        radius: [0, '34%'],
+                        label: {
+                            position: 'inner',
+                            fontSize: 14,
+                            color:'#ffffff',
+                            show:false
+                        },
+                        labelLine: {
+                            show: false
+                        },
+                        data: [
+                            {value: 1548, name: '农资',label:{fontSize:12}},
+                            {value: 775, name: '农具',label:{fontSize:12}},
+                            {value: 679, name: '种子',label:{fontSize:12}},
+                            {value: 251, name: '饲料',label:{fontSize:12}}
+                        ]
+                    },
+                    {
+                        name: 'Access From',
+                        type: 'pie',
+                        radius: ['36%', '50%'],
+                        labelLine: {
+                            length: 5
+                        },
+                        label: {
+                            fontSize: 12,
+                            color: '#ffffff'
+                        },
+                        data: [
+                            {value: 1048, name: '种苗'},
+                            {value: 335, name: '肥料'},
+                            {value: 310, name: '农药'},
+                        ]
+                    }
+                ]
+            }
+        },
+        methods: {
+            //空气温度
+            bindAirTemperature() {
+                var chartDom = document.getElementById('airTemperature');
+                var myChart = echarts.init(chartDom);
+                let sdf = this.airTemperature;
+                myChart.setOption(sdf);
+                // this.setReportSize();
+            },
+            add() {
+                console.log('add');
+                this.n++
+            },
+            bye() {
+                console.log('bye')
+                this.$destroy()
+            }
+        },
+        watch: {
+            n() {
+                console.log('n变了')
+            }
+        },
+        beforeCreate() {
+            console.log('beforeCreate')
+        },
+        created() {
+            console.log('created')
+        },
+        beforeMount() {
+            console.log('beforeMount')
+        },
+        mounted() {
+            console.log('mounted')
+            this.bindAirTemperature();
+        },
+        beforeUpdate() {
+            console.log('beforeUpdate')
+        },
+        updated() {
+            console.log('updated')
+        },
+        beforeDestroy() {
+            console.log('beforeDestroy')
+        },
+        destroyed() {
+            console.log('destroyed')
+        },
+    });
+</script>
+</html>

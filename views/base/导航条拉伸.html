@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+    .menu-box{
+        display: flex;
+        width: 200px;
+        overflow: auto;
+    }
+    .menu-box{
+        margin: 0 10px;
+        border: 1px solid red;
+        padding: 3px 6px;
+    }
+    .menu-box:hover{
+        transform: scale(1.1);
+        transition: transform 0.3s;
+        transform-origin: right;
+    }
+    /* 隐藏滚动条 */
+    .menu-box::-webkit-scrollbar {
+        width: 0.1em;
+        background-color: transparent;
+    }
+
+    .menu-box::-webkit-scrollbar-thumb {
+        background-color: transparent;
+    }
+
+    .menu-box::-webkit-scrollbar-track {
+        background-color: transparent;
+    }
+</style>
+<body>
+<div class="menu-box">
+    <div>AAA</div>
+    <div>BBB</div>
+    <div>CCC</div>
+    <div>DDD</div>
+    <div>EEE</div>
+    <div>FFF</div>
+    <div>GGG</div>
+    <div>HHH</div>
+    <div>III</div>
+</div>
+</body>
+</html>
