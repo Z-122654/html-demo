@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>块级容器（宽度撑满整行）和行内容器（宽度随内容自适应）</title>
+</head>
+<style>
+    .grid1 {
+        display: grid;
+        background-color: #1e9fff;
+        grid-template-columns: 100px 100px 100px;
+    }
+
+    .grid2 {
+        display: inline-grid;
+        background-color: #72d33d;
+    }
+</style>
+<body>
+<div class="grid1">
+    <div>
+        <div>AA</div>
+        <div>11</div>
+    </div>
+    <div>
+        <div>BB</div>
+        <div>22</div>
+    </div>
+</div>
+<div class="grid2">
+    <div>
+        <div>AA</div>
+        <div>11</div>
+    </div>
+    <div>
+        <div>BB</div>
+        <div>22</div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+    .container {
+        /* 一些基本样式 */
+        max-width: 400px;
+        margin: 0 auto;
+    }
+
+    .toggle-input {
+        display: none; /* 隐藏 checkbox，使用label触发 */
+    }
+
+    .toggle-button {
+        cursor: pointer;
+        background-color: #007BFF;
+        color: white;
+        padding: 10px;
+        border: none;
+        text-align: center;
+        display: inline-block;
+        border-radius: 5px;
+        margin-bottom: 10px;
+    }
+
+    .device-box {
+        display: grid;
+        overflow: hidden;
+        transition: max-height 0.3s ease; /* 设置过渡效果 */
+        max-height: 0; /* 默认高度为0，隐藏内容 */
+        border: 1px solid red;
+    }
+
+    .device-box.device-box-open {
+        max-height: 1000px; /* 设置一个足够大的值以适应内容 */
+        /* 这里应确保 max-height 足够大以容纳所有可能的内容 */
+    }
+</style>
+<body>
+<button onclick="openPop()">111</button>
+<div class="container">
+    <input type="checkbox" id="toggle" class="toggle-input">
+    <label for="toggle" class="toggle-button">展开</label>
+    <div class="device-box">
+        <p>这是可展开的内容。</p>
+        <p>可以包含任意数量的内容。</p>
+        <p>确保内容的高度是动态的。</p>
+        <p>确保内容的高度是动态的。</p>
+        <p>确保内容的高度是动态的。</p>
+        <p>这是可展开的内容。</p>
+        <p>可以包含任意数量的内容。</p>
+        <p>确保内容的高度是动态的。</p>
+        <p>确保内容的高度是动态的。</p>
+        <p>确保内容的高度是动态的。</p>
+    </div>
+</div>
+<script>
+    function openPop() {
+        document.querySelector('.device-box').classList.toggle('device-box-open');
+    }
+</script>
+</body>
+</html>

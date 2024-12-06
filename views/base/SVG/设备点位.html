@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SVG Zoom</title>
+    <style>
+        #controls {
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+<object id="svgObject" type="image/svg+xml" data="../../../img/area1.svg" width="800" height="800"></object>
+<div id="controls">
+    <button id="zoomIn">放大</button>
+    <button id="zoomOut">缩小</button>
+    <button id="saveBtn">保存设备位置</button>
+</div>
+
+<script>
+    const svgObject = document.getElementById('svgObject');
+    let intrinsicSVGWidth = 2000; // Initial SVG size.
+    let intrinsicSVGHeight = 2000;
+    let zoomLevel = 1.0;
+    const zoomFactor = 0.1;
+    let viewBoxX = 0;
+    let viewBoxY = 0;
+
+    let isPanning = false;
+    let initialPoint, initialViewBox;
+    const deviceStates = [];
+
+    svgObject.onload = function () {
+        const devices = [
+            {name: '设备1', x: 50, y: 50, href: '../../../img/touxiang.jpg'},
+            {name: '设备2', x: 150, y: 150, href: '../../../img/touxiang.jpg'},
+            {name: '设备3', x: 250, y: 250, href: '../../../img/touxiang.jpg'},
+            {name: '设备4', x: 350, y: 350, href: '../../../img/touxiang.jpg'},
+            {name: '设备5', x: 450, y: 450, href: '../../../img/touxiang.jpg'},
+            {name: '设备6', x: 550, y: 550, href: '../../../img/touxiang.jpg'},
+            {name: '设备7', x: 650, y: 650, href: '../../../img/touxiang.jpg'},
+        ];
+
+        const svgDocument = svgObject.contentDocument;
+        const svg = svgDocument.querySelector('svg');
+        svg.setAttribute("viewBox", `0 0 ${intrinsicSVGWidth} ${intrinsicSVGHeight}`);
+
+        devices.forEach((device, index) => {
+            let imageX = device.x;
+            let imageY = device.y;
+            const imageWidth = 50;
+            const imageHeight = 50;
+
+            const newImage = document.createElementNS('http://www.w3.org/2000/svg', 'image');
+            newImage.setAttribute('x', 0);
+            newImage.setAttribute('y', 0);
+            newImage.setAttribute('width', imageWidth);
+            newImage.setAttribute('height', imageHeight);
+            newImage.setAttribute('href', device.href);
+
+            const textElement = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+            textElement.textContent = device.name;
+            textElement.setAttribute('x', imageWidth / 2);
+            textElement.setAttribute('y', -10);
+            textElement.setAttribute('font-size', '18');
+            textElement.setAttribute('fill', 'black');
+            textElement.setAttribute('text-anchor', 'middle');
+
+            const group = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+            group.setAttribute('transform', `translate(${imageX}, ${imageY})`);
+            group.setAttribute('cursor', 'pointer');
+
+            group.appendChild(newImage);
+            group.appendChild(textElement);
+            svg.appendChild(group);
+
+            deviceStates[index] = {name: device.name, x: device.x, y: device.y};
+
+            let isDragging = false;
+            let dragStart = null;
+
+            const getMousePosition = (event) => {
+                const point = svg.createSVGPoint();
+                point.x = event.clientX;
+                point.y = event.clientY;
+                return point.matrixTransform(svg.getScreenCTM().inverse());
+            };
+
+            group.addEventListener('mousedown', (event) => {
+                isDragging = true;
+                dragStart = getMousePosition(event);
+                event.preventDefault();
+            });
+
+            svg.addEventListener('mousemove', (event) => {
+                if (isDragging) {
+                    const coord = getMousePosition(event);
+                    let dx = coord.x - dragStart.x;
+                    let dy = coord.y - dragStart.y;
+
+                    // 检查移动范围是否超出SVG画布边界
+                    if (imageX + dx < 0) {
+                        dx = -imageX;
+                    } else if (imageX + dx + imageWidth > intrinsicSVGWidth) {
+                        dx = intrinsicSVGWidth - imageX - imageWidth;
+                    }
+
+                    if (imageY + dy < 0) {
+                        dy = -imageY;
+                    } else if (imageY + dy + imageHeight > intrinsicSVGHeight) {
+                        dy = intrinsicSVGHeight - imageY - imageHeight;
+                    }
+
+                    group.setAttribute('transform', `translate(${imageX + dx}, ${imageY + dy})`);
+                }
+            });
+
+            svg.addEventListener('mouseup', () => {
+                if (isDragging) {
+                    const endPoint = getMousePosition(window.event);
+                    imageX += endPoint.x - dragStart.x;
+                    imageY += endPoint.y - dragStart.y;
+                    deviceStates[index].x = imageX;
+                    deviceStates[index].y = imageY;
+                    isDragging = false;
+                }
+            });
+
+            svg.addEventListener('mouseleave', () => {
+                if (isDragging) {
+                    const endPoint = getMousePosition(window.event);
+                    imageX += endPoint.x - dragStart.x;
+                    imageY += endPoint.y - dragStart.y;
+                    deviceStates[index].x = imageX;
+                    deviceStates[index].y = imageY;
+                    isDragging = false;
+                }
+            });
+        });
+
+        svgDocument.addEventListener('mousedown', (event) => {
+            if (event.ctrlKey) {
+                isPanning = true;
+                initialPoint = {x: event.clientX, y: event.clientY};
+                initialViewBox = {x: viewBoxX, y: viewBoxY};
+                svg.style.cursor = 'move';
+            }
+        });
+
+        svgDocument.addEventListener('mousemove', (event) => {
+            if (isPanning) {
+                const dx = (initialPoint.x - event.clientX) / zoomLevel;
+                const dy = (initialPoint.y - event.clientY) / zoomLevel;
+                viewBoxX = initialViewBox.x + dx;
+                viewBoxY = initialViewBox.y + dy;
+                svg.setAttribute("viewBox", `${viewBoxX} ${viewBoxY} ${intrinsicSVGWidth / zoomLevel} ${intrinsicSVGHeight / zoomLevel}`);
+            }
+        });
+
+        svgDocument.addEventListener('mouseup', () => {
+            if (isPanning) {
+                isPanning = false;
+                svg.style.cursor = 'default';
+            }
+        });
+
+        svgDocument.addEventListener('mouseleave', () => {
+            if (isPanning) {
+                isPanning = false;
+                svg.style.cursor = 'default';
+            }
+        });
+    };
+
+    const zoom = (direction) => {
+        const svgDocument = svgObject.contentDocument;
+        const svg = svgDocument.querySelector('svg');
+        zoomLevel += zoomFactor * direction;
+        const newWidth = intrinsicSVGWidth / zoomLevel;
+        const newHeight = intrinsicSVGHeight / zoomLevel;
+        svg.setAttribute("viewBox", `${viewBoxX} ${viewBoxY} ${newWidth} ${newHeight}`);
+    };
+
+    document.getElementById('zoomIn').addEventListener('click', () => zoom(1));
+    document.getElementById('zoomOut').addEventListener('click', () => zoom(-1));
+
+    document.getElementById('saveBtn').addEventListener('click', () => {
+        console.log("设备位置保存:", deviceStates);
+        // 在这里可以发送设备位置到服务器或进行其他进一步处理
+    });
+
+</script>
+</body>
+</html>

@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta
+            name="viewport"
+            content="initial-scale=1.0, user-scalable=no, width=device-width"
+    />
+    <title>标注和标注图层</title>
+    <link
+            rel="stylesheet"
+            href="https://a.amap.com/jsapi_demos/static/demo-center/css/demo-center.css"
+    />
+    <style>
+        html,
+        body,
+        #container {
+            height: 100%;
+            width: 100%;
+            margin: 0;
+        }
+
+        .collision-btn.disable {
+            background-image: none;
+            color: lightgrey;
+            border-color: lightgrey;
+            cursor: not-allowed;
+        }
+
+        .collision-btn.disable:hover {
+            background-color: #fff;
+            border-color: lightgrey;
+        }
+
+        .input-card .btn {
+            margin-right: 0.8rem;
+        }
+    </style>
+</head>
+<body>
+<div id="container"></div>
+<div class="info">测试</div>
+<script
+        type="text/javascript"
+        src="https://webapi.amap.com/maps?v=2.0&key=fb7815a8ee90d129e2de6bfa5e977b76"
+></script>
+<script>
+    // 设置一个图标对象
+    let icon = {
+        // 图标类型，现阶段只支持 image 类型
+        type: 'image',
+        // 图片 url
+        image:
+            '../../../img/touxiang.jpg',
+        // 图片尺寸
+        size: [40, 40],
+        // 图片相对 position 的锚点，默认为 bottom-center
+        anchor: 'center',
+    };
+    let textStyle = {
+        fontSize: 12,
+        fontWeight: 'normal',
+        fillColor: '#22886f',
+        strokeColor: '#fff',
+        strokeWidth: 2,
+        fold: true,
+        padding: '2, 5',
+        offset: [-20, -50]
+    };
+    let LabelsData = [
+        {
+            name: '自提点1',
+            position: [112.86, 23.30],
+            zooms: [10, 20],
+            opacity: 1,
+            zIndex: 10,
+            fold: true,
+            icon,
+            text: {
+                // 要展示的文字内容
+                content: '中邮速递易',
+                // 文字方向，有 icon 时为围绕文字的方向，没有 icon 时，则为相对 position 的位置
+                direction: 'center',
+                // 在 direction 基础上的偏移量
+                offset: [0, -35],
+                // 文字样式
+                style: {
+                    // 字体大小
+                    fontSize: 12,
+                    // 字体颜色
+                    fillColor: '#22886f',
+                    //
+                    strokeColor: '#fff',
+                    strokeWidth: 2,
+                    fold: true,
+                    padding: '2, 5'
+                },
+                selectStyle: {
+                    fillColor: "red",
+                    fontSize: 35,
+                    fontWeight: "normal",
+                    strokeColor: "blue",
+                    strokeWidth: 4
+                }
+            },
+        },
+        {
+            name: '自提点1',
+            position: [112.86, 23.40],
+            zooms: [10, 20],
+            opacity: 1,
+            zIndex: 10,
+            fold: true,
+            icon,
+            text: {
+                // 要展示的文字内容
+                content: '中邮速递易',
+                // 文字方向，有 icon 时为围绕文字的方向，没有 icon 时，则为相对 position 的位置
+                direction: 'center',
+                // 在 direction 基础上的偏移量
+                offset: [0, -35],
+                // 文字样式
+                style: {
+                    // 字体大小
+                    fontSize: 12,
+                    // 字体颜色
+                    fillColor: '#22886f',
+                    //
+                    strokeColor: '#fff',
+                    strokeWidth: 2,
+                    fold: true,
+                    padding: '2, 5'
+                },
+                selectStyle: {
+                    fillColor: "red",
+                    fontSize: 35,
+                    fontWeight: "normal",
+                    strokeColor: "blue",
+                    strokeWidth: 4
+                }
+            },
+        }
+    ];
+
+    let map = new AMap.Map('container', {
+        zoom: 15.8,
+        center: [116.469881, 39.993599],
+        showIndoorMap: false,
+    });
+
+    let markers = [];
+    let allowCollision = false;
+    let layer = new AMap.LabelsLayer({
+        zooms: [3, 20],
+        zIndex: 1000,
+        // collision: false,
+        // 设置 allowCollision：true，可以让标注避让用户的标注
+        allowCollision,
+    });
+    layer.add(markers);
+    // 图层添加到地图
+    map.add(layer);
+
+    // 初始化 labelMarker
+    for (let i = 0; i < LabelsData.length; i++) {
+        let curData = LabelsData[i];
+        curData.extData = {
+            index: i,
+            id:i
+        };
+
+        let labelMarker = new AMap.LabelMarker(curData);
+
+        //创建点标记的点击事件
+        labelMarker.on("click", function (e) {
+            console.log("labelMarkerClick", e);
+        });
+        markers.push(labelMarker);
+    }
+    // 将 marker 添加到图层
+    layer.add(markers);
+
+    map.setFitView(null, false, [100, 150, 10, 10]);
+
+    toggleBtn();
+
+    //标注避让
+    function allowCollisionFunc() {
+        allowCollision = true;
+        layer.setAllowCollision(true);
+        toggleBtn();
+    }
+
+    allowCollisionFunc();
+
+    //标注不避让
+    function notAllowCollisionFunc() {
+        allowCollision = false;
+        layer.setAllowCollision(false);
+        toggleBtn();
+    }
+
+    function toggleBtn() {
+        let allowCollisionBtn = document.getElementById('allowCollision');
+        let notAllowCollisionBtn = document.getElementById('notAllowCollision');
+        let disableClass = 'disable';
+
+        if (allowCollision) {
+            allowCollisionBtn.classList.add(disableClass);
+            notAllowCollisionBtn.classList.remove(disableClass);
+        } else {
+            allowCollisionBtn.classList.remove(disableClass);
+            notAllowCollisionBtn.classList.add(disableClass);
+        }
+    }
+</script>
+</body>
+</html>

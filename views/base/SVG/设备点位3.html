@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="../../../static/svg-pan-zoom/svg-pan-zoom.js"></script>
+</head>
+
+<body>
+<object id="areaMap" type="image/svg+xml" data="Map_of_Iceland.svg"
+        style="width: 500px; height: 500px; border:1px solid black; ">Your browser does not support SVG
+</object>
+<script>
+    // Don't use window.onLoad like this in production, because it can only listen to one function.
+    window.onload = function () {
+        svgPanZoom('#areaMap', {
+            zoomEnabled: true,
+            controlIconsEnabled: true
+        });
+        const deviceStates = [];
+
+        const svgObject = document.getElementById('areaMap');
+        const devices = [
+            {name: '设备1', x: 50, y: 50, href: '../../../img/touxiang.jpg'},
+            {name: '设备2', x: 150, y: 150, href: '../../../img/touxiang.jpg'},
+            {name: '设备3', x: 250, y: 250, href: '../../../img/touxiang.jpg'},
+            {name: '设备4', x: 350, y: 350, href: '../../../img/touxiang.jpg'},
+            {name: '设备5', x: 450, y: 450, href: '../../../img/touxiang.jpg'},
+            {name: '设备6', x: 550, y: 550, href: '../../../img/touxiang.jpg'},
+            {name: '设备7', x: 650, y: 650, href: '../../../img/touxiang.jpg'},
+        ];
+
+        const svgDocument = svgObject.contentDocument;
+        const viewport = svgDocument.querySelector('#viewport-g');
+
+        devices.forEach((device, index) => {
+            let imageX = device.x;
+            let imageY = device.y;
+            const imageWidth = 50;
+            const imageHeight = 50;
+
+            const newImage = document.createElementNS('http://www.w3.org/2000/svg', 'image');
+            newImage.setAttribute('x', 0);
+            newImage.setAttribute('y', 0);
+            newImage.setAttribute('width', imageWidth);
+            newImage.setAttribute('height', imageHeight);
+            newImage.setAttribute('href', device.href);
+
+            const textElement = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+            textElement.textContent = device.name;
+            textElement.setAttribute('x', imageWidth / 2);
+            textElement.setAttribute('y', -10);
+            textElement.setAttribute('font-size', '18');
+            textElement.setAttribute('fill', 'black');
+            textElement.setAttribute('text-anchor', 'middle');
+
+            const group = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+            group.setAttribute('transform', `translate(${imageX}, ${imageY})`);
+            group.setAttribute('cursor', 'pointer');
+
+            group.appendChild(newImage);
+            group.appendChild(textElement);
+
+            group.addEventListener('click', (e) => {
+                device;
+            });
+
+            viewport.appendChild(group);
+
+            deviceStates[index] = {name: device.name, x: device.x, y: device.y};
+        });
+    };
+</script>
+
+</body>
+
+</html>
