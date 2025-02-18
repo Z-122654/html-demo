@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="../../static/html2pdf/html2pdf.bundle.min.js"></script>
+    <script>
+        function exportPDF() {
+            const element = document.getElementById("userTable");
+            html2pdf(element, {
+                margin: 10,
+                filename: "user_info.pdf",
+                image: {type: "jpeg", quality: 0.98},
+                html2canvas: {scale: 2},
+                jsPDF: {unit: "mm", format: "a4", orientation: "portrait"}
+            });
+        }
+    </script>
+    <style>
+        body {
+            background-color: #eaedf2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #userTable {
+            width: 735px;
+            height: 1039px;
+            background-color: #ffffff;
+            box-sizing: border-box;
+            padding: 0 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        h3 {
+            margin: 0 15px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse; /* 去除默认边框间距 */
+        }
+
+        td {
+            border: 1px solid #000000; /* 添加边框 */
+            padding: 8px; /* 增加内边距 */
+            text-align: left; /* 内容左对齐 */
+            font-size: 13px;
+        }
+
+        .check_box {
+            border: none;
+            display: flex;
+            flex-wrap: wrap;
+            column-gap: 20px;
+            margin: 0;
+            padding: 0;
+        }
+
+        .td_text_align_center td {
+            text-align: center;
+        }
+
+        label {
+            display: flex;
+            align-items: center;
+        }
+
+        .input_span {
+            border-bottom: 1px solid black;
+            padding: 0 5px;
+        }
+    </style>
+</head>
+<body>
+<div>
+    <div id="userTable">
+        <form action="#">
+            <h3>附件4</h3>
+            <h3 style="text-align: center;">国能（肇庆）热点优先公司送外培训及费用报销审批表</h3>
+            <div style="text-align: right;padding-right: 50px;margin-bottom: 5px;">编号：2024-WP-XXX</div>
+            <table border="1" cellspacing="0" cellpadding="5" class="td_text_align_center">
+                <tr>
+                    <td>参加人员</td>
+                    <td colspan="2">陈清文</td>
+                    <td>部门</td>
+                    <td colspan="2">组织人事部</td>
+                </tr>
+                <tr>
+                    <td style="white-space: nowrap;">培训起止时间</td>
+                    <td colspan="2">2024年9月28日</td>
+                    <td>培训地点</td>
+                    <td colspan="2">广州</td>
+                </tr>
+                <tr>
+                    <td>培训通知<br>文件及文号</td>
+                    <td colspan="5">关于鼓励参加国家企业合规师职业能力（水平）考试的通知</td>
+                </tr>
+                <tr>
+                    <td>办班单位<br>名称</td>
+                    <td colspan="5">中国企业评价协会企业合规专业委员会</td>
+                </tr>
+                <tr>
+                    <td>培训分类</td>
+                    <td colspan="5">
+                        <fieldset class="check_box">
+                            <label for="userTable">
+                                <input type="checkbox">
+                                岗位资格培训
+                            </label>
+                            <label for="userTable">
+                                <input type="checkbox">
+                                岗位能力培训
+                            </label>
+                            <label for="userTable">
+                                <input type="checkbox">
+                                职业技能培训
+                            </label>
+                            <label for="userTable">
+                                <input type="checkbox">
+                                继续教育
+                            </label>
+                            <label for="userTable">
+                                <input type="checkbox">
+                                培训取证认证
+                            </label>
+                            <label for="userTable">
+                                <input type="checkbox">
+                                其他
+                            </label>
+                        </fieldset>
+                    </td>
+                </tr>
+                <tr>
+                    <td>培训计划</td>
+                    <td colspan="5">
+                        <fieldset class="check_box">
+                            <label for="userTable">
+                                <input type="checkbox">
+                                年度培训计划内
+                            </label>
+                            <label for="userTable">
+                                <input type="checkbox">
+                                年度培训计划外
+                            </label>
+                        </fieldset>
+                    </td>
+                </tr>
+                <tr>
+                    <td>培训主要<br>内容</td>
+                    <td colspan="5" style="text-align: left">企业合规师职业能力（水平）考试。</td>
+                </tr>
+                <tr style="height: 55px;">
+                    <td>部门意见</td>
+                    <td colspan="5" style="text-align: left"></td>
+                </tr>
+                <tr>
+                    <td>组织人事部<br>意见</td>
+                    <td colspan="5" style="text-align: left">同意 审批意见...</td>
+                </tr>
+                <tr>
+                    <td>分管领导<br>意见</td>
+                    <td colspan="5" style="text-align: left"></td>
+                </tr>
+                <tr>
+                    <td colspan="6">以下内容培训完毕报销费用时填写</td>
+                </tr>
+                <tr>
+                    <td>培训证书名称</td>
+                    <td style="min-width: 35px;"></td>
+                    <td>发证机关</td>
+                    <td style="min-width: 35px;"></td>
+                    <td>证书编号</td>
+                    <td style="min-width: 35px;"></td>
+                </tr>
+                <tr>
+                    <td>
+                        组织人事部<br>培训专责<br>审核登记<br>意&nbsp;&nbsp;&nbsp;&nbsp;见
+                    </td>
+                    <td colspan="5">
+                        <div>
+                            <div style="text-align: left;">
+                                1.登记情况：
+                            </div>
+                            <div>
+                                <fieldset class="check_box">
+                                    <label for="userTable">
+                                        <input type="checkbox">
+                                        培训总结已提交
+                                    </label>
+                                    <label for="userTable">
+                                        <input type="checkbox">
+                                        证书已提交
+                                    </label>
+                                    <label for="userTable">
+                                        <input type="checkbox">
+                                        证书编号
+                                    </label>
+                                </fieldset>
+                            </div>
+                        </div>
+                        <div style="text-align: left;">
+                            经审核，同意报销培训费<span class="input_span">980</span>元，其中差旅及补助费<span
+                                class="input_span">500</span>元。
+                        </div>
+                        <div style="display: flex;justify-content: space-between;padding-top: 20px;padding-right: 20px;padding-bottom: 10px;">
+                            <div>
+                                签名：
+                            </div>
+                            <div>
+                                日期：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;年&nbsp;&nbsp;&nbsp;&nbsp;月&nbsp;&nbsp;&nbsp;&nbsp;日
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        组织人事部<br>负责人意见
+                    </td>
+                    <td colspan="5">
+                        <div style="text-align: left;">
+                            同意列支培训费<span class="input_span">980</span>元，请财务产权部按公司相关规定予以报销。
+                        </div>
+                        <div style="text-align: right;padding-top: 50px;padding-right: 30px;">（盖章）</div>
+                        <div style="display: flex;justify-content: space-between;padding-right: 20px;padding-bottom: 10px;">
+                            <div>
+                                签名：
+                            </div>
+                            <div>
+                                日期：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;年&nbsp;&nbsp;&nbsp;&nbsp;月&nbsp;&nbsp;&nbsp;&nbsp;日
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+            <div style="padding-left: 20px">备注：附培训通知文件</div>
+        </form>
+    </div>
+</div>
+<button style="position:fixed;left: 30px;top: 30px;" onclick="exportPDF()">导出 PDF</button>
+
+</body>
+</html>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .a {
+            width: 300px;            /* 假设宽度也为 300px，可以根据实际情况调整 */
+            height: 300px;
+            display: flex;           /* 使用 Flexbox 布局 */
+            flex-direction: column;  /* 垂直方向排列子元素 */
+            overflow: hidden;        /* 避免 a 元素出现滚动条 */
+        }
+
+        .b1 {
+            flex: 1;                 /* 占据剩余高度 */
+            overflow-y: auto;        /* 垂直方向超出时显示滚动条 */
+        }
+
+        .b2 {
+            height: 50px;            /* 高度固定为 50px */
+            background-color: #f0f0f0; /* 用于显示效果 */
+        }
+
+        .content {
+            width: 100%;
+            height: auto;            /* 内容自适应 */
+        }
+
+    </style>
+</head>
+<body>
+<div class="a">
+    <div class="b1">
+        <div class="content">
+            <!-- 这里放置你的内容，超出时会出现滚动条 -->
+            <p>这里是一些内容</p>
+            <p>这里是一些内容</p>
+            <p>这里是一些内容</p>
+            <p>这里是一些内容</p>
+            <p>这里是一些内容</p>
+            <p>这里是一些内容</p>
+            <p>这里是一些内容</p>
+        </div>
+    </div>
+    <div class="b2">
+        这是 b2 元素
+    </div>
+</div>
+
+</body>
+</html>

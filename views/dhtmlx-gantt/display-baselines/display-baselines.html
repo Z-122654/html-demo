@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<head>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <title>Display baselines</title>
+
+    <script src="../../../static/dhtmlx-gantt/dhtmlxgantt.js?v=9.0.3"></script>
+    <link rel="stylesheet" href="../../../static/dhtmlx-gantt/controls_styles.css?v=9.0.3">
+    <link rel="stylesheet" href="controls_styles.css?v=9.0.3">
+    <script src="data_baselines.js?v=9.0.3"></script>
+    <style>
+        html, body {
+            height: 100%;
+            padding: 0;
+            margin: 0;
+            overflow: hidden;
+        }
+
+    </style>
+</head>
+<body>
+<div class="gantt_control">
+    <label title="Change how the baselines will be rendered">Baselines displayed on:</label>
+    <select class='reorder_mode gantt_input_styled' onchange=changeBaselineRender(this.value)>
+        <option value="">Off</option>
+        <option value="taskRow">Same row</option>
+        <option value="separateRow" selected>Separate row</option>
+        <option value="individualRow">Individual rows</option>
+    </select>
+    <label title="Change the height of a task bar">Change task bar height:</label>
+    <input type=number class="gantt_input_styled" value="20" oninput="changeBarHeight(this.value)"
+           onwheel="changeBarHeight(this.value)">
+</div>
+
+<div id="gantt_here" style='width:100%; height:calc(100vh - 52px);'></div>
+<script>
+    gantt.config.date_format = "%Y-%m-%d %H:%i:%s";
+
+    gantt.config.lightbox.milestone_sections = gantt.config.lightbox.sections = [
+        {name: "description", height: 38, map_to: "text", type: "textarea", focus: true},
+        {name: "time", type: "duration", map_to: "auto"},
+        {name: "baselines", height: 100, type: "baselines", map_to: "baselines"},
+    ];
+
+    gantt.config.resize_rows = true;
+    gantt.config.row_height = 30;
+    gantt.config.open_split_tasks = true;//通过点击 +/- 按钮可以展开/折叠拆分任务
+
+    // gantt.config.baselines.render_mode = "separateRow";
+    gantt.config.baselines = {
+        datastore: "baselines",
+        render_mode: 'individualRow',
+        dataprocessor_baselines: false,
+        row_height: 16,
+        bar_height: 8
+    };
+    gantt.config.columns = [
+        {name: "text", label: "任务名", resize: true, tree: true, width: '*'},
+        {
+            name: "show_time", label: "实际开始时间", resize: true, width: '*', align: "center",
+            template: function (item) {
+                debugger
+                return item.show_time === false ? '' : item.start_date;
+            }
+        },
+        {
+            name: "progress", label: "持续时间（天）", align: "center", width: '*'}
+    ]
+    gantt.init("gantt_here");
+    gantt.parse(taskData);
+
+</script>
+<script>
+    (function (i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r;
+        i[r] = i[r] || function () {
+            (i[r].q = i[r].q || []).push(arguments)
+        }, i[r].l = 1 * new Date();
+        a = s.createElement(o),
+            m = s.getElementsByTagName(o)[0];
+        a.async = 1;
+        a.src = g;
+        m.parentNode.insertBefore(a, m)
+    })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+    ga('create', 'UA-11031269-1', 'auto');
+    ga('send', 'pageview');
+</script>
+</body>
