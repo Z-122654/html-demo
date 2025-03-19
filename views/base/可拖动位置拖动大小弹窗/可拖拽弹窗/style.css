@@ -1,0 +1,51 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0; /* 消除默认外边距 */
+    height: 100vh; /* 设置高度 */
+    display: flex; /* 使用 flexbox 中心对齐 */
+    justify-content: center; /* 水平居中 */
+    align-items: center; /* 垂直居中 */
+}
+
+.modal {
+    position: fixed;
+    top: 100px;
+    left: 100px;
+    width: 300px;
+    height: 200px;
+    background-color: white;
+    border: 1px solid #ccc;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+}
+
+.modal-header {
+    background: #f1f1f1;
+    padding: 10px;
+    cursor: move; /* 设置拖动指针 */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-title {
+    font-size: 16px;
+}
+
+.close-button {
+    cursor: pointer;
+}
+
+.modal-content {
+    padding: 20px;
+}
+
+.resize-handle {
+    width: 10px;
+    height: 10px;
+    background: #ccc;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    cursor: nwse-resize; /* 设置调整大小的指针 */
+}
