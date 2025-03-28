@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        #box {
+            display: inline-block;
+            width: 300px;
+            height: 300px;
+            border: 1px solid red;
+        }
+    </style>
+</head>
+<body>
+<div id="box"></div>
+<script>
+    let elementById = document.getElementById('box');
+    elementById.ondragover = function (e) {
+        // e.preventDefault();
+    }
+
+    elementById.ondrop = function (e) {
+        e.preventDefault();
+        debugger
+        console.log(e.dataTransfer.files);
+    }
+</script>
+</body>
+</html>
