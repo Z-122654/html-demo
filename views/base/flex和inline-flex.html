@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+    /*默认会像div块级元素一样沾满整行
+    但是可以直接设置宽高
+    不会自动换行
+    */
+    #one {
+        display: flex;
+        background-color: red;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /*默认会像span块级元素一样由元素内容撑起宽度
+    但是可以直接设置宽高
+    不会自动换行
+    */
+    #two {
+        display: inline-flex;
+        background-color: blueviolet;
+        align-items: center;
+        justify-content: center;
+    }
+</style>
+<body>
+
+<div>
+    <div id="one">
+        <span>hello</span>
+        <span>flex</span>
+    </div>
+</div>
+
+<div>
+    <div id="two">
+        <span>hello</span>
+        <span>inline-flex</span>
+    </div>
+</div>
+
+</body>
+</html>

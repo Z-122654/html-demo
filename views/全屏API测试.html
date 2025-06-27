@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        #box {
+            display: flex;
+            width: 500px;
+            height: 500px;
+            background-color: #10e3ab;
+            padding: 30px;
+            overflow: auto;
+            position: relative;
+        }
+
+        #fullBtn {
+            width: 50px;
+            height: 30px;
+            background-color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: absolute;
+            right: 30px;
+            bottom: 30px;
+        }
+    </style>
+</head>
+<body>
+<div id="box">
+    <div style="width:200px;height: 2000px;background-color: red;">我是内容</div>
+    <div id="fullBtn">全屏</div>
+</div>
+<script>
+    document.querySelector('#fullBtn').addEventListener('click', () => {
+        let boxElement = document.querySelector('#box');
+        if (!document.fullscreenElement) {
+            boxElement.requestFullscreen();
+        } else if (document.exitFullscreen) {
+            document.exitFullscreen();
+        }
+    });
+</script>
+</body>
+</html>
