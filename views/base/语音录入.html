@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audio Recording Demo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        #container {
+            text-align: center;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #status {
+            margin-top: 10px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+<div id="container">
+    <button id="recordButton">Start Recording</button>
+    <div id="status">Status: Idle</div>
+    <audio id="audioPlayback" controls style="display: none; margin-top: 10px;"></audio>
+</div>
+
+<script>
+    let mediaRecorder;
+    let audioChunks = [];
+    const recordButton = document.getElementById('recordButton');
+    const status = document.getElementById('status');
+    const audioPlayback = document.getElementById('audioPlayback');
+    let isRecording = false;
+
+    recordButton.addEventListener('click', () => {
+        if (!isRecording) {
+            navigator.mediaDevices.getUserMedia({ audio: true })
+                .then(stream => {
+                    mediaRecorder = new MediaRecorder(stream);
+                    audioChunks = [];
+
+                    mediaRecorder.start();
+                    isRecording = true;
+                    recordButton.textContent = 'Stop Recording';
+                    status.textContent = 'Status: Recording...';
+
+                    mediaRecorder.ondataavailable = event => {
+                        audioChunks.push(event.data);
+                    };
+
+                    mediaRecorder.onstop = () => {
+                        const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+                        const audioUrl = URL.createObjectURL(audioBlob);
+                        audioPlayback.src = audioUrl;
+                        audioPlayback.style.display = 'block';
+                        status.textContent = 'Status: Idle';
+
+                        const a = document.createElement('a');
+                        a.href = audioUrl;
+                        a.download = 'recording.wav';
+                        a.click();
+                    };
+                })
+                .catch(err => {
+                    status.textContent = 'Status: Error - ' + err.message;
+                });
+        } else {
+            mediaRecorder.stop();
+            isRecording = false;
+            recordButton.textContent = 'Start Recording';
+        }
+    });
+</script>
+</body>
+</html>
