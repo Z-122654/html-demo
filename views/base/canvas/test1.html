@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8" />
+    <title>交接班流程图</title>
+</head>
+<body>
+<canvas id="handoverCanvas" width="1000" height="1200" style="border:1px solid #ccc;"></canvas>
+
+<script>
+    const canvas = document.getElementById('handoverCanvas');
+    const ctx = canvas.getContext('2d');
+
+    ctx.font = '14px Arial';
+    ctx.lineWidth = 1.5;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+
+    function drawBox(x, y, w, h, text, color = '#66dd88') {
+        ctx.fillStyle = color;
+        ctx.strokeStyle = '#333';
+        ctx.fillRect(x, y, w, h);
+        ctx.strokeRect(x, y, w, h);
+        ctx.fillStyle = '#000';
+        wrapText(text, x + w / 2, y + h / 2, w - 10, 16);
+    }
+
+    function drawDiamond(x, y, w, h, text) {
+        ctx.strokeStyle = '#333';
+        ctx.beginPath();
+        ctx.moveTo(x, y + h / 2);
+        ctx.lineTo(x + w / 2, y);
+        ctx.lineTo(x + w, y + h / 2);
+        ctx.lineTo(x + w / 2, y + h);
+        ctx.closePath();
+        ctx.stroke();
+
+        wrapText(text, x + w / 2, y + h / 2, w - 10, 16);
+    }
+
+    function drawArrow(fromX, fromY, toX, toY) {
+        const headlen = 10;
+        const dx = toX - fromX;
+        const dy = toY - fromY;
+        const angle = Math.atan2(dy, dx);
+
+        ctx.strokeStyle = '#000';
+        ctx.beginPath();
+        ctx.moveTo(fromX, fromY);
+        ctx.lineTo(toX, toY);
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.moveTo(toX, toY);
+        ctx.lineTo(toX - headlen * Math.cos(angle - Math.PI / 6), toY - headlen * Math.sin(angle - Math.PI / 6));
+        ctx.lineTo(toX - headlen * Math.cos(angle + Math.PI / 6), toY - headlen * Math.sin(angle + Math.PI / 6));
+        ctx.lineTo(toX, toY);
+        ctx.fillStyle = '#000';
+        ctx.fill();
+    }
+
+    function wrapText(text, x, y, maxWidth, lineHeight) {
+        const words = text.split('\n');
+        for (let i = 0; i < words.length; i++) {
+            ctx.fillText(words[i], x, y + i * lineHeight - (words.length - 1) * lineHeight / 2);
+        }
+    }
+
+    // ==== 绘图开始 ====
+
+    // 1. 开始
+    drawBox(400, 20, 120, 40, '开始', '#fff');
+
+    // 2. 左流程块
+    drawBox(80, 100, 260, 180, '1.1 提前30分钟准备\n1.2 各岗位检查\n1.3 辅控/公用系统检查\n1.4 工器具整备\n1.5 清点工具仪器\n1.6 清洁环境\n1.7 正确填写记录');
+
+    // 右流程块
+    drawBox(600, 100, 260, 100, '2.1 提前检查\n2.2 听取交班汇报\n2.3 召开班前会');
+
+    // 判断菱形框
+    drawDiamond(400, 320, 120, 80, '3 是否满足\n交接班条件');
+
+    // 分支不满足 - 走异常
+    drawBox(80, 460, 280, 100, '4 交接班异常处理\n4.1 不能交班 → 指挥\n4.2 交班责任人处理\n4.3 交班失败 → 报告领导\n4.4 未交班不得离岗', '#eee');
+
+    // 满足条件分支
+    drawBox(600, 460, 280, 40, '5 在运行日志上签字，对口接班');
+
+    // 收尾
+    drawBox(400, 540, 160, 40, '6 在运行日志上签字，对口交班');
+    drawBox(400, 620, 120, 40, '7 召开班后会');
+    drawBox(400, 700, 120, 40, '结束', '#fff');
+
+    // 箭头绘制
+    drawArrow(460, 60, 210, 100); // 开始 → 左流程
+    drawArrow(460, 60, 730, 100); // 开始 → 右流程
+    drawArrow(210, 280, 460, 320); // 左流程 → 判断
+    drawArrow(730, 200, 460, 320); // 右流程 → 判断
+
+    drawArrow(460, 360, 220, 460); // 否 → 异常
+    drawArrow(460, 360, 730, 460); // 是 → 签字
+
+    drawArrow(730, 500, 480, 540); // 满足条件 → 正常流程
+    drawArrow(220, 560, 480, 540); // 不满足处理后 → 回主流程
+
+    drawArrow(480, 580, 460, 620); // 到 7 召开班后会
+    drawArrow(460, 660, 460, 700); // 到结束
+
+</script>
+</body>
+</html>
