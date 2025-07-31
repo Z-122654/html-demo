@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>摄像头拍照</title>
+</head>
+<body>
+<h2>摄像头预览</h2>
+<video id="video" width="320" height="240" autoplay></video>
+<br>
+<button id="snap">拍照</button>
+<h2>照片</h2>
+<canvas id="canvas" width="320" height="240"></canvas>
+
+<script>
+    const video = document.getElementById('video');
+    const canvas = document.getElementById('canvas');
+    const snap = document.getElementById('snap');
+    const context = canvas.getContext('2d');
+
+    // 请求使用摄像头
+    navigator.mediaDevices.getUserMedia({ video: true })
+        .then(function(stream) {
+            video.srcObject = stream;
+        })
+        .catch(function(err) {
+            console.error("摄像头访问失败:", err);
+        });
+
+    // 拍照并绘制到 canvas
+    snap.addEventListener("click", function() {
+        context.drawImage(video, 0, 0, 320, 240);
+    });
+</script>
+</body>
+</html>
