@@ -1,51 +1,245 @@
 body {
-    font-family: Arial, sans-serif;
-    margin: 0; /* 消除默认外边距 */
-    height: 100vh; /* 设置高度 */
-    display: flex; /* 使用 flexbox 中心对齐 */
-    justify-content: center; /* 水平居中 */
-    align-items: center; /* 垂直居中 */
+    font-family: "Segoe UI", "PingFang SC", Arial, sans-serif;
+    margin: 0;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #f0f4ff 0%, #dce8ff 50%, #f7faff 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #1f2937;
 }
 
 .modal {
     position: fixed;
-    top: 100px;
-    left: 100px;
-    width: 300px;
-    height: 200px;
-    background-color: white;
-    border: 1px solid #ccc;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    top: calc(50vh - 190px);
+    left: calc(50vw - 190px);
+    width: 380px;
+    min-width: 320px;
+    min-height: 260px;
+    background: #ffffff;
+    border-radius: 18px;
+    border: 1px solid rgba(101, 120, 155, 0.1);
+    box-shadow: 0 18px 45px rgba(45, 64, 105, 0.18);
+    overflow: hidden;
     z-index: 1000;
+    transition: box-shadow 0.2s ease, transform 0.2s ease, opacity 0.2s ease;
+    animation: modal-pop 0.35s ease;
+}
+
+.modal:hover {
+    box-shadow: 0 24px 55px rgba(45, 64, 105, 0.2);
+    transform: translateY(-2px);
+}
+
+.modal-hidden {
+    opacity: 0;
+    transform: translateY(-16px);
+    pointer-events: none;
 }
 
 .modal-header {
-    background: #f1f1f1;
-    padding: 10px;
-    cursor: move; /* 设置拖动指针 */
+    background: linear-gradient(135deg, #4f46e5 0%, #6366f1 60%, #818cf8 100%);
+    padding: 16px 20px;
+    cursor: move;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    color: #ffffff;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.modal-title-wrap {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.modal-label {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2px 10px;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.18);
+    color: #e0e7ff;
 }
 
 .modal-title {
-    font-size: 16px;
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: 0.01em;
 }
 
 .close-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 999px;
+    border: none;
+    background: rgba(255, 255, 255, 0.2);
+    color: #ffffff;
+    font-size: 20px;
+    font-weight: 700;
     cursor: pointer;
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.close-button:hover {
+    background: rgba(255, 255, 255, 0.35);
+    transform: scale(1.05);
+}
+
+.close-button:active {
+    transform: scale(0.96);
 }
 
 .modal-content {
-    padding: 20px;
+    padding: 24px 24px 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.modal-subtitle {
+    margin: 0;
+    font-size: 15px;
+    line-height: 1.6;
+    color: #4c566a;
+}
+
+.modal-list {
+    margin: 0;
+    padding-left: 20px;
+    color: #374151;
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+.modal-list li {
+    margin-bottom: 6px;
+}
+
+.modal-list code {
+    background: rgba(79, 70, 229, 0.08);
+    padding: 2px 6px;
+    border-radius: 6px;
+    color: #4338ca;
+    font-family: "Fira Code", Consolas, monospace;
+}
+
+.modal-highlight {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.14), rgba(79, 70, 229, 0.05));
+    border: 1px solid rgba(99, 102, 241, 0.2);
+    border-radius: 12px;
+    padding: 14px 16px;
+    color: #3730a3;
+}
+
+.modal-highlight strong {
+    font-size: 13px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+.modal-highlight span {
+    font-size: 14px;
+    color: #312e81;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    padding: 16px 24px 20px;
+    border-top: 1px solid #edf2ff;
+    background: linear-gradient(180deg, rgba(249, 250, 255, 0.95), rgba(238, 242, 255, 0.9));
+}
+
+.btn {
+    min-width: 116px;
+    padding: 10px 18px;
+    border-radius: 12px;
+    border: none;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #4f46e5 0%, #6366f1 60%, #818cf8 100%);
+    color: #ffffff;
+    box-shadow: 0 12px 24px rgba(99, 102, 241, 0.25);
+}
+
+.btn-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 15px 28px rgba(99, 102, 241, 0.32);
+}
+
+.btn-secondary {
+    background: rgba(99, 102, 241, 0.08);
+    color: #4338ca;
+    border: 1px solid rgba(99, 102, 241, 0.2);
+}
+
+.btn-secondary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 18px rgba(99, 102, 241, 0.18);
 }
 
 .resize-handle {
-    width: 10px;
-    height: 10px;
-    background: #ccc;
+    width: 18px;
+    height: 18px;
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.3), rgba(129, 140, 248, 0.4));
     position: absolute;
-    right: 0;
-    bottom: 0;
-    cursor: nwse-resize; /* 设置调整大小的指针 */
+    right: 8px;
+    bottom: 8px;
+    cursor: nwse-resize;
+    border-radius: 4px;
+    box-shadow: 0 4px 10px rgba(79, 70, 229, 0.25);
+}
+
+.open-modal-button {
+    position: fixed;
+    bottom: 40px;
+    right: 40px;
+    padding: 12px 20px;
+    border-radius: 999px;
+    border: none;
+    font-size: 14px;
+    font-weight: 600;
+    background: linear-gradient(135deg, #10b981 0%, #14b8a6 100%);
+    color: #ffffff;
+    cursor: pointer;
+    box-shadow: 0 15px 30px rgba(20, 184, 166, 0.25);
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.open-modal-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 18px 34px rgba(20, 184, 166, 0.32);
+}
+
+.open-modal-button:active {
+    transform: translateY(0);
+}
+
+@keyframes modal-pop {
+    0% {
+        opacity: 0;
+        transform: translateY(24px) scale(0.97);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
 }

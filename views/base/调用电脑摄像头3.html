@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>高清摄像头拍照并保存</title>
+</head>
+<body>
+<h2>摄像头预览</h2>
+<video id="video" autoplay playsinline></video>
+<br>
+<button id="snap">拍照</button>
+<button id="toggleCamera">终止摄像头</button>
+<h2>照片</h2>
+<canvas id="canvas" style="display:none;"></canvas>
+<br>
+<a id="downloadLink" style="display:none;">下载照片</a>
+<br>
+<button id="upload">上传照片</button> <span id="uploadStatus" style="display:none;"></span>
+
+<script>
+    const video = document.getElementById('video');
+    const canvas = document.getElementById('canvas');
+    const snap = document.getElementById('snap');
+    const downloadLink = document.getElementById('downloadLink');
+    const toggleCameraBtn = document.getElementById('toggleCamera');
+    const context = canvas.getContext('2d');
+    
+    let stream = null;
+    let isCameraActive = true;
+
+    // 启动摄像头的函数
+    function startCamera() {
+        navigator.mediaDevices.getUserMedia({
+            video: {
+                width: {ideal: 3840}, // 4K 宽度
+                height: {ideal: 2160}, // 4K 高度
+                facingMode: "user" // 前置摄像头，可改成 "environment" 用后置
+            }
+        }).then(mediaStream => {
+            stream = mediaStream;
+            video.srcObject = stream;
+            isCameraActive = true;
+            toggleCameraBtn.textContent = "终止摄像头";
+            console.log("摄像头已启动");
+        }).catch(err => {
+            console.error("摄像头访问失败:", err);
+            alert("摄像头访问失败: " + err.message);
+        });
+    }
+
+    // 停止摄像头的函数
+    function stopCamera() {
+        if (stream) {
+            stream.getTracks().forEach(track => track.stop());
+            video.srcObject = null;
+            stream = null;
+            isCameraActive = false;
+            toggleCameraBtn.textContent = "启用摄像头";
+            console.log("摄像头已停止");
+        }
+    }
+
+    // 切换摄像头状态
+    toggleCameraBtn.addEventListener('click', function() {
+        if (isCameraActive) {
+            stopCamera();
+        } else {
+            startCamera();
+        }
+    });
+
+    // 初始启动摄像头
+    startCamera();
+
+    snap.addEventListener("click", function () {
+        if (!isCameraActive) {
+            alert('请先启用摄像头');
+            return;
+        }
+        
+        // 确保用视频原始分辨率绘制
+        const w = video.videoWidth;
+        const h = video.videoHeight;
+        canvas.width = w;
+        canvas.height = h;
+
+        // 绘制当前视频帧
+        context.drawImage(video, 0, 0, w, h);
+
+        // 生成高清 JPEG (1.0 最高质量)
+        const imageDataURL = canvas.toDataURL("image/jpeg", 1.0);
+
+        // 配置下载
+        downloadLink.href = imageDataURL;
+        downloadLink.download = "photo.jpg";
+        downloadLink.textContent = "点击下载照片";
+        downloadLink.style.display = "inline";
+
+        // 存储图像数据以便上传
+        canvas.dataset.imageData = imageDataURL;
+    });
+    
+    // 上传功能实现
+    const uploadBtn = document.getElementById('upload');
+    const uploadStatus = document.getElementById('uploadStatus');
+
+    uploadBtn.addEventListener('click', function() {
+        const imageDataURL = canvas.dataset.imageData;
+
+        if (!imageDataURL) {
+            alert('请先拍照再上传');
+            return;
+        }
+
+        uploadStatus.textContent = '上传中...';
+        uploadStatus.style.display = 'inline';
+
+        // 转换base64数据为Blob
+        const blob = dataURItoBlob(imageDataURL);
+        const formData = new FormData();
+        formData.append('photo', blob, 'photo.jpg');
+
+        // 发送到服务器
+        fetch('/upload', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('上传失败');
+            }
+            return response.json();
+        })
+        .then(data => {
+            uploadStatus.textContent = '上传成功';
+            console.log('上传结果:', data);
+        })
+        .catch(error => {
+            uploadStatus.textContent = '上传失败: ' + error.message;
+            console.error('上传错误:', error);
+        });
+    });
+
+    // 辅助函数: 将base64转换为Blob
+    function dataURItoBlob(dataURI) {
+        const byteString = atob(dataURI.split(',')[1]);
+        const mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+        const ab = new ArrayBuffer(byteString.length);
+        const ia = new Uint8Array(ab);
+        for (let i = 0; i < byteString.length; i++) {
+            ia[i] = byteString.charCodeAt(i);
+        }
+        return new Blob([ab], {type: mimeString});
+    }
+</script>
+</body>
+</html>

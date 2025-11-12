@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>四大量价指标分析仪表盘</title>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .dashboard {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+        
+        .header h1 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+        
+        .header p {
+            color: #7f8c8d;
+            font-size: 16px;
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+        
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .chart-container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            padding: 20px;
+            height: 450px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .chart-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
+        }
+        
+        .chart-title {
+            font-size: 18px;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+        }
+        
+        .chart-title i {
+            margin-right: 8px;
+            font-size: 20px;
+        }
+        
+        .chart {
+            width: 100%;
+            height: calc(100% - 40px);
+        }
+        
+        .kpi-cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .kpi-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            padding: 20px;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+        
+        .kpi-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .kpi-icon {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+        
+        .kpi-title {
+            font-size: 16px;
+            color: #7f8c8d;
+            margin-bottom: 10px;
+        }
+        
+        .kpi-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: #2c3e50;
+        }
+        
+        .kpi-change {
+            font-size: 14px;
+            margin-top: 5px;
+            padding: 3px 8px;
+            border-radius: 12px;
+            display: inline-block;
+        }
+        
+        .positive {
+            background-color: rgba(46, 204, 113, 0.2);
+            color: #27ae60;
+        }
+        
+        .negative {
+            background-color: rgba(231, 76, 60, 0.2);
+            color: #c0392b;
+        }
+        
+        .special {
+            background-color: rgba(241, 196, 15, 0.2);
+            color: #f39c12;
+        }
+        
+        .full-width {
+            grid-column: 1 / -1;
+        }
+        
+        @media (max-width: 1200px) {
+            .grid-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .kpi-cards {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .kpi-cards {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .summary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        .summary h2 {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .summary h2 i {
+            margin-right: 10px;
+        }
+        
+        .summary p {
+            line-height: 1.6;
+            font-size: 16px;
+        }
+        
+        .highlight {
+            background-color: rgba(255, 255, 255, 0.2);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard">
+        <div class="header">
+            <h1>四大量价指标分析仪表盘</h1>
+            <p>基于电力、热力、煤炭、天然气四大业务板块的量价指标分析，帮助管理层快速识别利润驱动因素和风险点</p>
+        </div>
+        
+        <div class="summary">
+            <h2><i>📊</i> 核心业绩洞察</h2>
+            <p>本期利润增长主要由 <span class="highlight">发电量(+7.21%)</span> 和 <span class="highlight">售电价(+5.01%)</span> 驱动，产生约 <span class="highlight">+60,500万元</span> 增利效应；
+            但被 <span class="highlight">煤价上涨(+14.82%)</span> 部分抵消，产生 <span class="highlight">-35,000万元</span> 减利影响。
+            <span class="highlight">煤耗下降(-13.67%)</span> 贡献 <span class="highlight">+12,000万元</span> 成本节约。</p>
+        </div>
+        
+        <div class="kpi-cards">
+            <div class="kpi-card">
+                <div class="kpi-icon">⚡</div>
+                <div class="kpi-title">发电量</div>
+                <div class="kpi-value">+7.21%</div>
+                <div class="kpi-change positive">增利 +42,000万</div>
+            </div>
+            
+            <div class="kpi-card">
+                <div class="kpi-icon">💰</div>
+                <div class="kpi-title">售电价</div>
+                <div class="kpi-value">+5.01%</div>
+                <div class="kpi-change positive">增利 +18,500万</div>
+            </div>
+            
+            <div class="kpi-card">
+                <div class="kpi-icon">🔥</div>
+                <div class="kpi-title">入炉煤价</div>
+                <div class="kpi-value">+14.82%</div>
+                <div class="kpi-change negative">减利 -35,000万</div>
+            </div>
+            
+            <div class="kpi-card">
+                <div class="kpi-icon">📉</div>
+                <div class="kpi-title">发电煤耗</div>
+                <div class="kpi-value">-13.67%</div>
+                <div class="kpi-change positive">增利 +12,000万</div>
+            </div>
+            
+            <div class="kpi-card">
+                <div class="kpi-icon">🌡️</div>
+                <div class="kpi-title">供热量</div>
+                <div class="kpi-value">-8.66%</div>
+                <div class="kpi-change negative">减利 -3,200万</div>
+            </div>
+            
+            <div class="kpi-card">
+                <div class="kpi-icon">🔄</div>
+                <div class="kpi-title">天然气新增</div>
+                <div class="kpi-value">不可比</div>
+                <div class="kpi-change special">增利 +5,000万</div>
+            </div>
+        </div>
+        
+        <div class="grid-container">
+            <div class="chart-container">
+                <div class="chart-title"><i>📈</i> 四大量价指标雷达图</div>
+                <div id="radarChart" class="chart"></div>
+            </div>
+            
+            <div class="chart-container">
+                <div class="chart-title"><i>📊</i> 电力业务量价分析</div>
+                <div id="dualAxisChart" class="chart"></div>
+            </div>
+            
+            <div class="chart-container">
+                <div class="chart-title"><i>🔥</i> 燃料成本变动分解</div>
+                <div id="stackedBarChart" class="chart"></div>
+            </div>
+            
+            <div class="chart-container">
+                <div class="chart-title"><i>💹</i> 利润影响因素热力图</div>
+                <div id="heatmapChart" class="chart"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 初始化所有图表
+        const radarChart = echarts.init(document.getElementById('radarChart'));
+        const dualAxisChart = echarts.init(document.getElementById('dualAxisChart'));
+        const stackedBarChart = echarts.init(document.getElementById('stackedBarChart'));
+        const heatmapChart = echarts.init(document.getElementById('heatmapChart'));
+        
+        // 1. 雷达图配置
+        const radarOption = {
+            tooltip: {
+                trigger: 'item'
+            },
+            legend: {
+                data: ['本期同比', '行业平均'],
+                bottom: 30
+            },
+            radar: {
+                shape: 'circle',
+                center: ['50%', '44%'],
+                radius: '60%',
+                indicator: [
+                    { name: '发电量', max: 20 },
+                    { name: '售电价', max: 20 },
+                    { name: '供热量', max: 20 },
+                    { name: '售热价', max: 20 },
+                    { name: '发电煤耗', max: 20 },
+                    { name: '入炉煤价', max: 20 }
+                ],
+                axisName: {
+                    color: '#333',
+                    fontSize: 12,
+                    formatter: function(name, indicator) {
+                        const values = {
+                            '发电量': '+7.21%',
+                            '售电价': '+5.01%',
+                            '供热量': '-8.66%',
+                            '售热价': '-8.27%',
+                            '发电煤耗': '-13.67%',
+                            '入炉煤价': '+14.82%'
+                        };
+                        
+                        let color = '#333';
+                        if (values[name].includes('+')) color = '#52c41a';
+                        else if (values[name].includes('-')) color = '#ff4d4f';
+                        
+                        return `{name|${name}}\n{value|${values[name]}}`;
+                    },
+                    rich: {
+                        name: {
+                            fontSize: 12,
+                            color: '#333',
+                            fontWeight: 'bold'
+                        },
+                        value: {
+                            fontSize: 11,
+                            color: '#fff',
+                            padding: [2, 4],
+                            borderRadius: 4,
+                            lineHeight: 16
+                        }
+                    }
+                }
+            },
+            series: [{
+                name: '四大量价指标',
+                type: 'radar',
+                data: [
+                    {
+                        value: [7.21, 5.01, 8.66, 8.27, 13.67, 14.82],
+                        name: '本期同比',
+                        symbolSize: 6,
+                        lineStyle: {
+                            width: 2,
+                            color: '#1890ff'
+                        },
+                        areaStyle: {
+                            color: 'rgba(24, 144, 255, 0.3)'
+                        },
+                        itemStyle: {
+                            color: '#1890ff'
+                        }
+                    },
+                    {
+                        value: [5.5, 3.2, 5.1, 4.8, 8.5, 9.2],
+                        name: '行业平均',
+                        symbolSize: 6,
+                        lineStyle: {
+                            width: 2,
+                            type: 'dashed',
+                            color: '#fa8c16'
+                        },
+                        areaStyle: {
+                            color: 'rgba(250, 140, 22, 0.1)'
+                        },
+                        itemStyle: {
+                            color: '#fa8c16'
+                        }
+                    }
+                ]
+            }]
+        };
+        
+        // 2. 双轴组合图配置
+        const dualAxisOption = {
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: {
+                    type: 'cross'
+                }
+            },
+            legend: {
+                data: ['发电量同比', '售电价同比'],
+                top: 10
+            },
+            grid: {
+                top: '15%',
+                left: '10%',
+                right: '10%',
+                bottom: '15%'
+            },
+            xAxis: {
+                type: 'category',
+                data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月'],
+                axisLine: {
+                    lineStyle: {
+                        color: '#999'
+                    }
+                }
+            },
+            yAxis: [
+                {
+                    type: 'value',
+                    name: '发电量同比 (%)',
+                    position: 'left',
+                    axisLine: {
+                        show: true,
+                        lineStyle: {
+                            color: '#5470c6'
+                        }
+                    },
+                    axisLabel: {
+                        formatter: '{value}%'
+                    }
+                },
+                {
+                    type: 'value',
+                    name: '售电价同比 (%)',
+                    position: 'right',
+                    axisLine: {
+                        show: true,
+                        lineStyle: {
+                            color: '#91cc75'
+                        }
+                    },
+                    axisLabel: {
+                        formatter: '{value}%'
+                    }
+                }
+            ],
+            series: [
+                {
+                    name: '发电量同比',
+                    type: 'bar',
+                    yAxisIndex: 0,
+                    data: [5.2, 4.8, 6.1, 5.9, 6.5, 6.8, 7.0, 7.1, 7.21],
+                    itemStyle: {
+                        color: '#5470c6'
+                    }
+                },
+                {
+                    name: '售电价同比',
+                    type: 'line',
+                    yAxisIndex: 1,
+                    data: [3.2, 3.5, 3.8, 4.1, 4.3, 4.6, 4.8, 4.9, 5.01],
+                    itemStyle: {
+                        color: '#91cc75'
+                    },
+                    lineStyle: {
+                        width: 3
+                    }
+                }
+            ]
+        };
+        
+        // 3. 堆叠条形图配置
+        const stackedBarOption = {
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: {
+                    type: 'shadow'
+                },
+                formatter: function(params) {
+                    let result = params[0].name + '<br/>';
+                    params.forEach(param => {
+                        const sign = param.value > 0 ? '+' : '';
+                        result += `${param.seriesName}: ${sign}${param.value}元/千千瓦时<br/>`;
+                    });
+                    return result;
+                }
+            },
+            legend: {
+                data: ['煤价上涨影响', '煤耗下降影响'],
+                top: 10
+            },
+            grid: {
+                top: '15%',
+                left: '10%',
+                right: '10%',
+                bottom: '15%'
+            },
+            xAxis: {
+                type: 'value',
+                axisLabel: {
+                    formatter: '{value} 元/千千瓦时'
+                }
+            },
+            yAxis: {
+                type: 'category',
+                data: ['单位燃料成本变动']
+            },
+            series: [
+                {
+                    name: '煤价上涨影响',
+                    type: 'bar',
+                    stack: 'total',
+                    data: [28.5],
+                    itemStyle: {
+                        color: '#ff4d4f'
+                    },
+                    label: {
+                        show: true,
+                        position: 'insideRight',
+                        formatter: '+28.5'
+                    }
+                },
+                {
+                    name: '煤耗下降影响',
+                    type: 'bar',
+                    stack: 'total',
+                    data: [-15.2],
+                    itemStyle: {
+                        color: '#52c41a'
+                    },
+                    label: {
+                        show: true,
+                        position: 'insideRight',
+                        formatter: '-15.2'
+                    }
+                }
+            ]
+        };
+        
+        // 4. 热力图配置
+        const profitHeatmapOption = {
+            tooltip: {
+                position: 'top',
+                formatter: function(params) {
+                    const factors = {
+                        '0': '电量增长',
+                        '1': '电价上涨', 
+                        '2': '煤价上涨',
+                        '3': '煤耗下降',
+                        '4': '供热收缩',
+                        '5': '天然气新增'
+                    };
+                    const values = {
+                        '0': 42000,
+                        '1': 18500,
+                        '2': -35000,
+                        '3': 12000,
+                        '4': -3200,
+                        '5': 5000
+                    };
+                    const types = {
+                        '0': '强增利',
+                        '1': '增利',
+                        '2': '强减利',
+                        '3': '增利',
+                        '4': '减利',
+                        '5': '特殊项'
+                    };
+                    
+                    return `${factors[params.data[1]]}: ${values[params.data[1]] > 0 ? '+' : ''}${values[params.data[1]].toLocaleString()}万元<br/>类型: ${types[params.data[1]]}`;
+                }
+            },
+            grid: {
+                height: '70%',
+                top: '10%'
+            },
+            xAxis: {
+                type: 'category',
+                data: ['利润影响(万元)'],
+                splitArea: {
+                    show: true
+                }
+            },
+            yAxis: {
+                type: 'category',
+                data: ['电量增长', '电价上涨', '煤价上涨', '煤耗下降', '供热收缩', '天然气新增'],
+                splitArea: {
+                    show: true
+                }
+            },
+            visualMap: {
+                type: 'piecewise',
+                min: -50000,
+                max: 50000,
+                orient: 'horizontal',
+                left: 'center',
+                top: 'bottom',
+                pieces: [
+                    {min: 30000, label: '强增利', color: '#008000'},
+                    {min: 10000, max: 30000, label: '增利', color: '#90EE90'},
+                    {min: -10000, max: 10000, label: '中性', color: '#FFFFFF'},
+                    {min: -30000, max: -10000, label: '减利', color: '#FFB6C1'},
+                    {max: -30000, label: '强减利', color: '#FF0000'}
+                ],
+                textStyle: {
+                    color: '#000'
+                }
+            },
+            series: [{
+                name: '利润影响',
+                type: 'heatmap',
+                data: [
+                    [0, 0, 42000],
+                    [0, 1, 18500],
+                    [0, 2, -35000],
+                    [0, 3, 12000],
+                    [0, 4, -3200],
+                    [0, 5, 5000]
+                ],
+                label: {
+                    show: true,
+                    formatter: function(params) {
+                        const value = params.data[2];
+                        return value > 0 ? `+${(value/1000).toFixed(0)}k` : `${(value/1000).toFixed(0)}k`;
+                    }
+                },
+                itemStyle: {
+                    borderWidth: 1,
+                    borderColor: '#ccc'
+                }
+            }]
+        };
+        
+        // 应用配置
+        radarChart.setOption(radarOption);
+        dualAxisChart.setOption(dualAxisOption);
+        stackedBarChart.setOption(stackedBarOption);
+        heatmapChart.setOption(profitHeatmapOption);
+        
+        // 响应式调整
+        window.addEventListener('resize', function() {
+            radarChart.resize();
+            dualAxisChart.resize();
+            stackedBarChart.resize();
+            heatmapChart.resize();
+        });
+    </script>
+</body>
+</html>

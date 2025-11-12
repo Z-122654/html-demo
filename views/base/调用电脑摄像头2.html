@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>高清摄像头拍照并保存</title>
+</head>
+<body>
+<h2>摄像头预览</h2>
+<video id="video" autoplay playsinline></video>
+<br>
+<button id="snap">拍照</button>
+<h2>照片</h2>
+<canvas id="canvas" style="display:none;"></canvas>
+<br>
+<a id="downloadLink" style="display:none;">下载照片</a>
+
+<script>
+    const video = document.getElementById('video');
+    const canvas = document.getElementById('canvas');
+    const snap = document.getElementById('snap');
+    const downloadLink = document.getElementById('downloadLink');
+    const context = canvas.getContext('2d');
+
+    // 请求高分辨率摄像头
+    navigator.mediaDevices.getUserMedia({
+        video: {
+            width: {ideal: 3840}, // 4K 宽度
+            height: {ideal: 2160}, // 4K 高度
+            facingMode: "user" // 前置摄像头，可改成 "environment" 用后置
+        }
+    }).then(stream => {
+        video.srcObject = stream;
+    }).catch(err => {
+        console.error("摄像头访问失败:", err);
+    });
+
+    snap.addEventListener("click", function () {
+        // 确保用视频原始分辨率绘制
+        const w = video.videoWidth;
+        const h = video.videoHeight;
+        canvas.width = w;
+        canvas.height = h;
+
+        // 绘制当前视频帧
+        context.drawImage(video, 0, 0, w, h);
+
+        // 生成高清 JPEG (1.0 最高质量)
+        const imageDataURL = canvas.toDataURL("image/jpeg", 1.0);
+
+        // 配置下载
+        downloadLink.href = imageDataURL;
+        downloadLink.download = "photo.jpg";
+        downloadLink.textContent = "点击下载照片";
+        downloadLink.style.display = "inline";
+    });
+</script>
+</body>
+</html>

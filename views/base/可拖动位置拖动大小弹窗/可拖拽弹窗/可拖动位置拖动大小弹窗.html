@@ -9,19 +9,105 @@
 <body>
 <div id="modal" class="modal">
     <div class="modal-header" id="modal-header">
-        <span class="modal-title">可拖动弹窗</span>
-        <span class="close-button" id="close-button">&times;</span>
+        <div class="modal-title-wrap">
+            <span class="modal-label">演示</span>
+            <span class="modal-title">可拖动弹窗</span>
+        </div>
+        <button class="close-button" id="close-button" type="button" aria-label="关闭弹窗">&times;</button>
     </div>
     <div class="modal-content">
-        <p>这是一个可拖动和调整大小的弹窗。</p>
+        <p class="modal-subtitle">拖拽标题栏或右下角体验弹窗的浮动与缩放效果。</p>
+        <ul class="modal-list">
+            <li>拖动：按住顶部区域并移动鼠标。</li>
+            <li>缩放：从右下角握柄向外或向内拖动。</li>
+            <li>主题：可在 <code>style.css</code> 中快速自定义颜色和圆角。</li>
+        </ul>
+        <div class="modal-highlight">
+            <strong>建议</strong>
+            <span>将此组件嵌入到交互教程或后台面板中，示例更直观。</span>
+        </div>
+    </div>
+    <div class="modal-actions">
+        <button class="btn btn-primary" type="button">立即应用</button>
+        <button class="btn btn-secondary" type="button">稍后提醒</button>
     </div>
     <div class="resize-handle" id="resize-handle"></div>
 </div>
+<button class="open-modal-button" id="open-modal" type="button" hidden>重新打开弹窗</button>
 
 <script type="module">
     import ModalFloat from './modalFloat.js';
 
-    new ModalFloat({targetModal: '#modal', targetModalHeader: '#modal-header'});
+    const modalFloat = new ModalFloat({targetModal: '#modal', targetModalHeader: '#modal-header'});
+
+    const modal = document.querySelector('#modal');
+    const closeButton = document.querySelector('#close-button');
+    const openButton = document.querySelector('#open-modal');
+    const resizeHandle = document.querySelector('#resize-handle');
+
+    if (modalFloat) {
+        closeButton.addEventListener('click', () => {
+            modal.classList.add('modal-hidden');
+            openButton.hidden = false;
+        });
+
+        openButton.addEventListener('click', () => {
+            modal.classList.remove('modal-hidden');
+            openButton.hidden = true;
+        });
+    }
+
+    let isResizing = false;
+    let startX = 0;
+    let startY = 0;
+    let startWidth = 0;
+    let startHeight = 0;
+    const minWidth = 320;
+    const minHeight = 220;
+
+    const handleResizeMove = (event) => {
+        if (!isResizing) {
+            return;
+        }
+        const deltaX = event.clientX - startX;
+        const deltaY = event.clientY - startY;
+
+        const nextWidth = Math.max(minWidth, startWidth + deltaX);
+        const nextHeight = Math.max(minHeight, startHeight + deltaY);
+
+        modal.style.width = `${nextWidth}px`;
+        modal.style.height = `${nextHeight}px`;
+        if (modalFloat) {
+            modalFloat.elementWidth = nextWidth;
+            modalFloat.elementHeight = nextHeight;
+            modalFloat.controlBallPosition();
+        }
+    };
+
+    const stopResizing = () => {
+        if (!isResizing) {
+            return;
+        }
+        isResizing = false;
+        document.body.style.userSelect = '';
+        document.removeEventListener('mousemove', handleResizeMove);
+        document.removeEventListener('mouseup', stopResizing);
+    };
+
+    if (resizeHandle) {
+        resizeHandle.addEventListener('mousedown', (event) => {
+            isResizing = true;
+            startX = event.clientX;
+            startY = event.clientY;
+            startWidth = modal.getBoundingClientRect().width;
+            startHeight = modal.getBoundingClientRect().height;
+
+            document.body.style.userSelect = 'none';
+            document.addEventListener('mousemove', handleResizeMove);
+            document.addEventListener('mouseup', stopResizing);
+            event.preventDefault();
+        });
+    }
 </script>
 </body>
 </html>
